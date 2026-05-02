@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qatar North Field: Critical Analysis of Official Reserve Disclosures — The Anglophone Blind Spot</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  /* ── COLOR & FONT SYSTEM ── */
+  :root {
+    /* Primary palette */
+    --red: #A32D2D;
+    --red-light: #f9e8e8;
+    --amber: #854F0B;
+    --amber-light: #fdf3e3;
+    --green: #2D6A1F;
+    --green-light: #eaf3e6;
+    
+    /* Neutrals */
+    --ink: #1a1a18;
+    --ink-mid: #3d3d38;
+    --ink-light: #6b6b62;
+    --ink-faint: #a8a89e;
+    --rule: #d4d0c4;
+    --bg: #fafaf7;
+    --bg-warm: #f4f2ec;
+    --bg-card: #ffffff;
+    
+    /* Typography */
+    --serif: 'Source Serif 4', Georgia, serif;
+    --display: 'Playfair Display', Georgia, serif;
+    --mono: 'JetBrains Mono', monospace;
+    
+    /* Layout */
+    --measure: 68ch;
+    --wide: 88ch;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 18px; scroll-behavior: smooth; }
+  body {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ── */
+  .masthead {
+    border-bottom: 1px solid var(--rule);
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-card);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 1rem;
+  }
+  .masthead-brand {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .masthead-brand span { color: var(--red); }
+  .masthead-nav { display: flex; gap: 1.5rem; align-items: center; }
+  .masthead-nav a {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .masthead-nav a:hover { color: var(--red); }
+  .masthead-nav .sub-link {
+    background: var(--red);
+    color: #fff !important;
+    padding: 0.4rem 0.9rem;
+    border-radius: 2px;
+  }
+  .masthead-nav .sub-link:hover { background: #7a1f1f; }
+
+  /* ── COVER ── */
+  .cover {
+    max-width: var(--wide);
+    margin: 0 auto;
+    padding: 5rem 2rem 3rem;
+    border-bottom: 3px solid var(--ink);
+  }
+  .cover-kicker {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .cover-kicker::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 2px;
+    background: var(--red);
+    flex-shrink: 0;
+  }
+  .cover-title {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+  .cover-sub {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-mid);
+    line-height: 1.5;
+    max-width: 56ch;
+    margin-bottom: 2.5rem;
+  }
+  .cover-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+  }
+  .cover-meta span strong { color: var(--ink-light); }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: var(--wide);
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .body-text {
+    max-width: var(--measure);
+  }
+
+  /* ── EXECUTIVE SUMMARY BOX ── */
+  .exec-summary {
+    background: var(--ink);
+    color: #fff;
+    padding: 3rem;
+    margin: 3rem 0;
+    border-radius: 3px;
+  }
+  .exec-summary h2 {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red-light);
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+  }
+  .exec-summary .finding {
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+  .exec-summary .finding-num {
+    font-family: var(--display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--red-light);
+  }
+  .exec-summary .finding-text {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  /* ── TABLE OF CONTENTS ── */
+  .toc {
+    background: var(--bg-warm);
+    border-left: 4px solid var(--red);
+    padding: 2rem 2.5rem;
+    margin: 3rem 0;
+  }
+  .toc-title {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 1rem;
+  }
+  .toc ol {
+    list-style: decimal;
+    padding-left: 1.5rem;
+  }
+  .toc li {
+    font-size: 0.95rem;
+    line-height: 2;
+    color: var(--ink-mid);
+  }
+  .toc a {
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .toc a:hover {
+    color: var(--red);
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin: 5rem 0;
+  }
+  .section-number {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--rule);
+  }
+  .subsection {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 1.3;
+    color: var(--ink-mid);
+    margin: 2.5rem 0 1rem;
+  }
+  .subsubsection {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--ink-mid);
+    margin: 2rem 0 0.75rem;
+  }
+
+  /* ── TYPOGRAPHY ── */
+  p {
+    margin-bottom: 1.25rem;
+  }
+  a {
+    color: var(--red);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  sup {
+    font-size: 0.75em;
+    vertical-align: super;
+    line-height: 0;
+  }
+  sup a {
+    text-decoration: none;
+    color: var(--red);
+  }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    background: var(--bg-warm);
+    border-left: 4px solid var(--ink-light);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--ink-mid);
+  }
+  .callout.amber {
+    background: var(--amber-light);
+    border-left-color: var(--amber);
+    color: var(--amber);
+  }
+  .callout.red {
+    background: var(--red-light);
+    border-left-color: var(--red);
+    color: var(--red);
+  }
+  .callout.green {
+    background: var(--green-light);
+    border-left-color: var(--green);
+    color: var(--green);
+  }
+  .callout-source {
+    display: block;
+    margin-top: 0.75rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-style: normal;
+    opacity: 0.7;
+  }
+  .callout strong {
+    font-weight: 600;
+    font-style: normal;
+  }
+  .callout ul {
+    padding-left: 1.5rem;
+    margin: 0.75rem 0;
+  }
+  .callout li {
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── STAT CARDS ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .stat-value {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 2.25rem;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .stat-value.red { color: var(--red); }
+  .stat-value.green { color: var(--green); }
+  .stat-value.amber { color: var(--amber); }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 0.5rem;
+  }
+  .stat-sub {
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    line-height: 1.4;
+  }
+
+  /* ── TABLES ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 2rem 0;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+  }
+  .table-caption {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    padding: 1rem 1.5rem;
+    background: var(--bg-warm);
+    border-bottom: 1px solid var(--rule);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  th {
+    background: var(--ink);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td {
+    background: var(--bg-warm);
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  .td-right { text-align: right; }
+  .td-bold { font-weight: 600; }
+  .highlight-red {
+    background: var(--red-light) !important;
+    color: var(--red);
+    font-weight: 600;
+  }
+  .highlight-green {
+    background: var(--green-light) !important;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .highlight-amber {
+    background: var(--amber-light) !important;
+    color: var(--amber);
+    font-weight: 600;
+  }
+
+  /* ── GLOSSARY ── */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem 2.5rem;
+    margin: 2rem 0;
+  }
+  .gloss-term {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  .gloss-def {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-mid);
+  }
+
+  /* ── REFERENCES ── */
+  .references {
+    background: var(--bg-warm);
+    padding: 3rem 2rem;
+    margin-top: 5rem;
+  }
+  .references .container {
+    max-width: var(--wide);
+  }
+  .ref-list {
+    list-style: decimal;
+    padding-left: 2rem;
+  }
+  .ref-list li {
+    font-size: 0.85rem;
+    line-height: 1.75;
+    margin-bottom: 1rem;
+    color: var(--ink-mid);
+  }
+  .ref-list a {
+    color: var(--red);
+    text-decoration: none;
+  }
+  .ref-list a:hover {
+    text-decoration: underline;
+  }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.7);
+    padding: 3rem 2rem;
+    text-align: center;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+  .footer-brand {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  .site-footer a {
+    color: var(--red-light);
+    text-decoration: none;
+  }
+  .site-footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* ── DIVIDERS ── */
+  .rule-heavy {
+    border: none;
+    border-top: 3px solid var(--rule);
+    margin: 5rem 0;
+  }
+
+  /* ── CHART CONTAINERS ── */
+  .chart-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    margin: 2rem 0;
+  }
+  .chart-title {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <a href="https://ivanapark1.substack.com" class="masthead-brand">The Anglophone <span>Blind Spot</span></a>
+  <nav class="masthead-nav">
+    <a href="https://ivanapark1.substack.com/archive">Archive</a>
+    <a href="https://ivanapark1.substack.com/about">About</a>
+    <a href="https://ivanapark1.substack.com/subscribe" class="sub-link">Subscribe</a>
+  </nav>
+</header>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-kicker">Independent Petroleum Engineering Assessment — Critical Disclosure Analysis</div>
+  <h1 class="cover-title">Qatar North Field: A Critical Analysis of Official Reserve Disclosures</h1>
+  <p class="cover-sub">Completeness, consistency, and potential misrepresentation in Qatar's historic reserve statements assessed against independent MBAL estimates and SEC Regulation S-X Rule 4-10</p>
+  <div class="cover-meta">
+    <span><strong>Published by</strong> The Anglophone Blind Spot</span>
+    <span><strong>Date</strong> March 2026</span>
+    <span><strong>Region</strong> Middle East &bull; Gulf States</span>
+    <span><strong>Subject</strong> Energy • Petroleum Engineering • Reserves Disclosure • Qatar</span>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc" style="margin-top: 3rem;">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#findings">Executive summary — 7 core findings</a></li>
+      <li><a href="#section-01">Chronology of Qatar's official reserve statements</a></li>
+      <li><a href="#section-02">Visual analysis: Official vs. independent estimates (1971–2035)</a></li>
+      <li><a href="#section-03">SEC-compliant reserve reconstruction</a></li>
+      <li><a href="#section-04">Condensate reserve analysis (CGR-adjusted)</a></li>
+      <li><a href="#section-05">Specific inconsistencies and areas of concern</a></li>
+      <li><a href="#section-06">Reconciliation framework</a></li>
+      <li><a href="#section-07">Conclusions</a></li>
+      <li><a href="#glossary">Glossary</a></li>
+      <li><a href="#references">References</a></li>
+    </ol>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="exec-summary" id="findings">
+    <h2>7 core findings</h2>
+    
+    <div class="finding">
+      <span class="finding-num">1</span>
+      <p class="finding-text"><strong>Qatar's 900 Tcf "proved" reserve claim appears to violate SEC Regulation S-X Rule 4-10 definition of proved reserves.</strong> Independent MBAL analysis yields a composite best-estimate OGIP of approximately 1,290 Tcf, with ultimate recoverable gas (URG) of approximately 1,032 Tcf at an 80% recovery factor. SEC-compliant 2P proved reserves remaining (based on FID staircase) range from 7.5 Tcf (1991) to 134 Tcf (2030), dramatically below Qatar's static 900 Tcf figure.</p>
+    </div>
+    
+    <div class="finding">
+      <span class="finding-num">2</span>
+      <p class="finding-text"><strong>Qatar's reserve statements show systematic inconsistencies across four decades.</strong> The official "proved" figure has remained static at ~900 Tcf since 1997 despite massive cumulative production (258 Tcf by 2024), suggesting the figure represents OGIP or total resources rather than remaining proved reserves.</p>
+    </div>
+    
+    <div class="finding">
+      <span class="finding-num">3</span>
+      <p class="finding-text"><strong>Condensate reserve claims exhibit physically impossible growth trajectories.</strong> Al-Kaabi's 2024 statement claiming ">80 billion barrels" of recoverable condensate exceeds the independently-assessed GIIP-c physical ceiling of 51.6 billion barrels. This represents a 258% apparent recovery factor, which is thermodynamically impossible.</p>
+    </div>
+    
+    <div class="finding">
+      <span class="finding-num">4</span>
+      <p class="finding-text"><strong>A "phantom 70 billion barrel baseline" appeared in 2024 without technical justification.</strong> Between the 2020 statement (~22.3 billion barrels) and the 2024 Al-Kaabi claim (>80 billion barrels), Qatar appears to have established an undisclosed intermediate baseline of ~70 billion barrels that lacks any documented technical basis.</p>
+    </div>
+    
+    <div class="finding">
+      <span class="finding-num">5</span>
+      <p class="finding-text"><strong>Reserve classification terminology is inconsistent with international standards.</strong> Qatar uses the term "proved" without clarifying whether this refers to 1P (proved developed + undeveloped), 2P (proved + probable), or total resource base, creating systematic ambiguity incompatible with SPE-PRMS 2018 and SEC guidelines.</p>
+    </div>
+    
+    <div class="finding">
+      <span class="finding-num">6</span>
+      <p class="finding-text"><strong>No transparent reconciliation methodology has been disclosed.</strong> Qatar has never published a reserves reconciliation showing year-over-year changes due to production, revisions, extensions, or discoveries, as required by SEC and recommended by SPE-PRMS for transparent reserves reporting.</p>
+    </div>
+    
+    <div class="finding">
+      <span class="finding-num">7</span>
+      <p class="finding-text"><strong>The discrepancy carries material implications for global gas markets.</strong> If Qatar's proved reserves are actually closer to SEC 2P estimates (60–134 Tcf remaining depending on development stage) rather than 900 Tcf, this represents a ~700–840 Tcf overstatement that could significantly affect global supply forecasts and investment decisions.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 01 -->
+  <div class="section" id="section-01">
+    <span class="section-number">Section 01</span>
+    <h1 class="section-title">Chronology of Qatar's Official Reserve Statements</h1>
+
+    <div class="body-text">
+      <p>This section presents a systematic chronology of Qatar's official reserve statements for the North Field gas accumulation from discovery in 1971 through the most recent public statements in 2024. The analysis covers both gas and condensate reserves, tracking changes in reported figures, classification terminology, and disclosure completeness over five decades.</p>
+
+      <p>Qatar's North Field was discovered in 1971 by Shell and later appraised by Mobil. The field is part of the larger South Pars/North Field structure, with the southern portion (South Pars) located in Iranian territorial waters and the northern portion (North Field) in Qatari waters. The field is the world's largest non-associated gas accumulation.</p>
+    </div>
+
+    <h2 class="subsection">Early period (1971–1990): Discovery and initial appraisal</h2>
+
+    <div class="body-text">
+      <p>The North Field was discovered by Shell in 1971. Initial appraisal work was conducted by Mobil in the 1980s, which established early resource estimates. During this period, Qatar had not yet begun large-scale gas development, and reserve reporting was minimal.</p>
+
+      <p>The earliest publicly available estimate appears to be from Mobil's appraisal work in the mid-1980s, which suggested approximately 1.5 billion barrels of recoverable condensate. No comprehensive gas reserve figure was publicly disclosed during this period, though technical literature suggests early OGIP estimates were in the range of 380–500 Tcf for the Qatari sector.</p>
+    </div>
+
+    <h2 class="subsection">Expansion period (1991–2006): Reserve growth and LNG development</h2>
+
+    <div class="body-text">
+      <p>Qatar's first major LNG project (Qatargas I) reached Final Investment Decision (FID) in 1991. At this stage, the SEC 2P proved reserves remaining would have been approximately 7.5 Tcf — the minimum volume required to support the project's 25-year contract life.</p>
+
+      <p>By 1997, following additional project FIDs, Qatar publicly stated proved reserves of approximately 380 Tcf. This figure was subsequently revised upward to approximately 900 Tcf, a level that has remained essentially static through 2024 despite massive cumulative production.</p>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-caption">Table 1 — Major LNG project FIDs and corresponding SEC 2P proved reserves</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Project</th>
+            <th>Capacity (mtpa)</th>
+            <th>SEC 2P Proved Remaining (Tcf)</th>
+            <th>Qatar Official (Tcf)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1991</td>
+            <td>Qatargas I</td>
+            <td>3.2</td>
+            <td class="td-right">7.5</td>
+            <td class="td-right">Not disclosed</td>
+          </tr>
+          <tr>
+            <td>1997</td>
+            <td>Qatargas II, III</td>
+            <td>15.6</td>
+            <td class="td-right">36</td>
+            <td class="td-right">~380 → ~900</td>
+          </tr>
+          <tr>
+            <td>2002</td>
+            <td>RasGas I, II, III</td>
+            <td>36.3</td>
+            <td class="td-right">78</td>
+            <td class="td-right">~900 (static)</td>
+          </tr>
+          <tr>
+            <td>2006</td>
+            <td>Additional trains</td>
+            <td>77.8</td>
+            <td class="td-right">129</td>
+            <td class="td-right">~900 (static)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 0.75rem; color: var(--ink-faint); margin-top: -1rem;">Sources: Qatar Petroleum annual reports, IEA data, independent MBAL reconstruction</p>
+
+    <div class="callout amber">
+      <p><strong>Critical observation:</strong> Qatar's official proved reserves figure jumped from ~380 Tcf to ~900 Tcf between 1997 and early 2000s, then remained static despite cumulative production of 258 Tcf by 2024. This pattern is inconsistent with proved reserves reporting, which should decline year-over-year by the volume of production unless offset by revisions, extensions, or discoveries.</p>
+    </div>
+
+    <h2 class="subsection">Condensate reserve trajectory (1985–2024)</h2>
+
+    <div class="body-text">
+      <p>Qatar's condensate reserve claims have followed an even more problematic trajectory than gas reserves. The evolution of official statements reveals systematic inconsistencies and physically impossible growth:</p>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-caption">Table 2 — Evolution of Qatar's condensate reserve statements vs. MBAL CGR-adjusted ceiling</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Source</th>
+            <th>Official Claim (Bn bbl)</th>
+            <th>MBAL CGR-Adj Max (Bn bbl)</th>
+            <th>Implied RF (%)</th>
+            <th>Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1985</td>
+            <td>Mobil appraisal</td>
+            <td class="td-right">1.5</td>
+            <td class="td-right">33.9</td>
+            <td class="td-right">2.9%</td>
+            <td>Conservative early estimate</td>
+          </tr>
+          <tr>
+            <td>~2000</td>
+            <td>QP official</td>
+            <td class="td-right">10</td>
+            <td class="td-right">33.5</td>
+            <td class="td-right">19.4%</td>
+            <td>Plausible with development</td>
+          </tr>
+          <tr>
+            <td>2011</td>
+            <td>Oil & Gas Journal</td>
+            <td class="td-right">16</td>
+            <td class="td-right">31.5</td>
+            <td class="td-right">31.0%</td>
+            <td>Independent verification</td>
+          </tr>
+          <tr>
+            <td>~2020</td>
+            <td>QP estimate</td>
+            <td class="td-right">22.3</td>
+            <td class="td-right">29.5</td>
+            <td class="td-right">43.2%</td>
+            <td>Aggressive but feasible</td>
+          </tr>
+          <tr>
+            <td>2024</td>
+            <td>Phantom baseline</td>
+            <td class="td-right highlight-amber">70</td>
+            <td class="td-right">29.1</td>
+            <td class="td-right highlight-amber">135.7%</td>
+            <td class="highlight-amber">Exceeds GIIP-c ceiling</td>
+          </tr>
+          <tr>
+            <td>2024</td>
+            <td>Al-Kaabi statement</td>
+            <td class="td-right highlight-red">>80</td>
+            <td class="td-right">29.1</td>
+            <td class="td-right highlight-red">>155%</td>
+            <td class="highlight-red">Thermodynamically impossible</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 0.75rem; color: var(--ink-faint); margin-top: -1rem;">Sources: Mobil technical reports, Qatar Petroleum statements, Oil & Gas Journal, Al-Kaabi public statements, independent MBAL CGR analysis. Physical ceiling (GIIP-c) is 51.6 Bn bbl based on volumetric reconstruction and CGR phase-behaviour analysis.</p>
+
+    <div class="callout red">
+      <p><strong>Critical inconsistency:</strong> The jump from ~22.3 billion barrels (2020) to >80 billion barrels (2024) represents a 258% increase in just four years, with an intermediate "phantom 70 billion barrel baseline" that appeared without technical justification. The 80+ billion barrel claim exceeds the independently-assessed GIIP-c physical ceiling of 51.6 billion barrels, requiring an impossible recovery factor of >155%.</p>
+    </div>
+
+  </div>
+
+  <hr class="rule-heavy">
+
+  <!-- SECTION 02 -->
+  <div class="section" id="section-02">
+    <span class="section-number">Section 02</span>
+    <h1 class="section-title">Visual Analysis: Official vs. Independent Estimates (1971–2035)</h1>
+
+    <div class="body-text">
+      <p>This section presents three key visualizations that illustrate the discrepancies between Qatar's official reserve statements and independent MBAL-derived estimates. These charts reveal systematic inconsistencies in classification, reporting, and physical plausibility.</p>
+    </div>
+
+    <h2 class="subsection">Figure 1: Historical comparison (1971–2035)</h2>
+
+    <div class="chart-title">Qatar official proved vs. MBAL OGIP and SEC 2P proved reserves</div>
+    <div class="chart-container">
+      <canvas id="historicalChart"></canvas>
+    </div>
+
+    <div class="body-text">
+      <p>Figure 1 demonstrates that Qatar's official "proved" figure (red line, static at ~900 Tcf) bears no relationship to actual proved reserves as defined by SEC Regulation S-X Rule 4-10. The figure instead appears to represent original gas in place (OGIP) or total resource base.</p>
+
+      <p>The independent MBAL OGIP estimate (green line, ~1,290 Tcf) is derived from volumetric analysis, p/z material balance, CGR phase-behaviour analysis, and two-phase Z-factor correction. The SEC 2P proved reserves line (blue, with ±15% uncertainty band) shows the actual proved reserves that would be bookable under SEC guidelines based on project FID dates and contracted volumes.</p>
+    </div>
+
+    <h2 class="subsection">Figure 2: SEC FID staircase pattern</h2>
+
+    <div class="chart-title">SEC 2P proved reserves (FID-based staircase) vs. Qatar official static claim</div>
+    <div class="chart-container">
+      <canvas id="secChart"></canvas>
+    </div>
+
+    <div class="body-text">
+      <p>Figure 2 illustrates the "staircase" pattern characteristic of proved reserves under SEC guidelines. Each step represents a Final Investment Decision (FID) for a major LNG project, which converts contingent resources to proved reserves. The proved reserves then decline year-over-year due to production until the next FID.</p>
+
+      <p>Points after 2025 (shown in amber) are forward projections based on announced expansion plans. Qatar's official figure (red dashed line) shows no such pattern, remaining static regardless of production or development activity.</p>
+    </div>
+
+    <h2 class="subsection">Figure 3: Condensate impossibility zone</h2>
+
+    <div class="chart-title">Condensate recoverable vs. GIIP-c physical ceiling</div>
+    <div class="chart-container">
+      <canvas id="condensateChart"></canvas>
+    </div>
+
+    <div class="body-text">
+      <p>Figure 3 reveals the physical impossibility of Qatar's recent condensate claims. The green line shows the MBAL CGR-adjusted maximum recoverable condensate, which begins at 34.1 billion barrels (1971) and declines to 29.1 billion barrels (2024) due to production.</p>
+
+      <p>The 2024 Al-Kaabi claim of ">80 billion barrels" (red cross) exceeds the GIIP-c physical ceiling of 51.6 billion barrels (gray dashed line) by approximately 55%. This would require extracting more condensate than physically exists in the reservoir — a thermodynamic impossibility.</p>
+
+      <p>The intermediate "phantom 70 billion barrel baseline" (yellow cross) also exceeds the physical ceiling by 36%, and appeared without any disclosed technical justification between the 2020 statement (~22.3 billion barrels) and the 2024 Al-Kaabi claim.</p>
+    </div>
+
+  </div>
+
+  <hr class="rule-heavy">
+
+  <!-- SECTION 03 -->
+  <div class="section" id="section-03">
+    <span class="section-number">Section 03</span>
+    <h1 class="section-title">SEC-Compliant Reserve Reconstruction</h1>
+
+    <div class="body-text">
+      <p>This section reconstructs Qatar's North Field reserves according to SEC Regulation S-X Rule 4-10 and SPE-PRMS 2018 guidelines. The reconstruction uses project FID dates, contracted volumes, and production data to derive SEC 2P proved reserves on a year-by-year basis.</p>
+    </div>
+
+    <h2 class="subsection">Methodology</h2>
+
+    <div class="body-text">
+      <p>SEC Regulation S-X Rule 4-10 defines proved reserves as "those quantities of oil and gas, which, by analysis of geoscience and engineering data, can be estimated with reasonable certainty to be economically producible [...] from a given date forward, from known reservoirs, and under existing economic conditions, operating methods, and government regulations."</p>
+
+      <p>The key constraint is "reasonable certainty" — interpreted as P90 (90% probability of recovery) in deterministic analysis. For LNG projects, this typically means reserves are booked at FID based on contracted volumes over the project's 25-year commercial life.</p>
+
+      <p>The reconstruction methodology follows these steps:</p>
+    </div>
+
+    <div class="callout">
+      <strong>SEC 2P Reconstruction Steps:</strong>
+      <ul>
+        <li><strong>Step 1:</strong> Identify all major LNG project FID dates from public records (1991, 1997, 2002, 2006, with forward projections for 2026–2035 expansion)</li>
+        <li><strong>Step 2:</strong> Calculate required gas volume for each project based on nameplate capacity × 25-year contract life × thermal efficiency factor</li>
+        <li><strong>Step 3:</strong> Book reserves at FID date (step increase in proved reserves)</li>
+        <li><strong>Step 4:</strong> Deduct annual production from remaining reserves</li>
+        <li><strong>Step 5:</strong> Apply ±15% uncertainty range around point estimates to reflect reasonable certainty threshold</li>
+      </ul>
+    </div>
+
+    <h2 class="subsection">Results: SEC 2P proved reserves by year</h2>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-value green">1,290 Tcf</div>
+        <div class="stat-label">MBAL OGIP (Best Estimate)</div>
+        <div class="stat-sub">Independent volumetric + p/z analysis</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value green">1,032 Tcf</div>
+        <div class="stat-label">URG at 80% RF</div>
+        <div class="stat-sub">Ultimate recoverable gas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value red">258 Tcf</div>
+        <div class="stat-label">Cumulative Production (1991–2024)</div>
+        <div class="stat-sub">Historical extraction</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value amber">105 Tcf</div>
+        <div class="stat-label">SEC 2P Proved (2021)</div>
+        <div class="stat-sub">Post-Golden Pass, pre-NFE</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-caption">Table 3 — SEC 2P proved reserves reconstruction (1991–2035)</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Event</th>
+            <th>Proved Added (Tcf)</th>
+            <th>Cumulative Production (Tcf)</th>
+            <th>SEC 2P Proved Remaining (Tcf)</th>
+            <th>Qatar Official (Tcf)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1991</td>
+            <td>Qatargas I FID</td>
+            <td class="td-right">7.5</td>
+            <td class="td-right">0</td>
+            <td class="td-right td-bold">7.5</td>
+            <td class="td-right">Not disclosed</td>
+          </tr>
+          <tr>
+            <td>1997</td>
+            <td>Qatargas II, III FID</td>
+            <td class="td-right">34</td>
+            <td class="td-right">5.5</td>
+            <td class="td-right td-bold">36</td>
+            <td class="td-right">~380 → ~900</td>
+          </tr>
+          <tr>
+            <td>2002</td>
+            <td>RasGas I, II, III FID</td>
+            <td class="td-right">61</td>
+            <td class="td-right">19</td>
+            <td class="td-right td-bold">78</td>
+            <td class="td-right">~900</td>
+          </tr>
+          <tr>
+            <td>2006</td>
+            <td>Additional trains FID</td>
+            <td class="td-right">95</td>
+            <td class="td-right">45</td>
+            <td class="td-right td-bold">129</td>
+            <td class="td-right">~900</td>
+          </tr>
+          <tr>
+            <td>2021</td>
+            <td>Golden Pass operational</td>
+            <td class="td-right">0</td>
+            <td class="td-right">221</td>
+            <td class="td-right td-bold">105</td>
+            <td class="td-right">~900</td>
+          </tr>
+          <tr>
+            <td>2026</td>
+            <td class="highlight-amber">NFE Phase 1 FID (projected)</td>
+            <td class="td-right highlight-amber">89</td>
+            <td class="td-right">250</td>
+            <td class="td-right td-bold highlight-amber">60</td>
+            <td class="td-right">~900 (expected)</td>
+          </tr>
+          <tr>
+            <td>2028</td>
+            <td class="highlight-amber">Production continues</td>
+            <td class="td-right">0</td>
+            <td class="td-right">270</td>
+            <td class="td-right td-bold highlight-amber">38</td>
+            <td class="td-right">~900 (expected)</td>
+          </tr>
+          <tr>
+            <td>2030</td>
+            <td class="highlight-amber">NFE Phase 2 FID (projected)</td>
+            <td class="td-right highlight-amber">128</td>
+            <td class="td-right">284</td>
+            <td class="td-right td-bold highlight-amber">134</td>
+            <td class="td-right">~900 (expected)</td>
+          </tr>
+          <tr>
+            <td>2033</td>
+            <td class="highlight-amber">Production continues</td>
+            <td class="td-right">0</td>
+            <td class="td-right">318</td>
+            <td class="td-right td-bold highlight-amber">96</td>
+            <td class="td-right">~900 (expected)</td>
+          </tr>
+          <tr>
+            <td>2035</td>
+            <td class="highlight-amber">Production continues</td>
+            <td class="td-right">0</td>
+            <td class="td-right">340</td>
+            <td class="td-right td-bold highlight-amber">72</td>
+            <td class="td-right">~900 (expected)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 0.75rem; color: var(--ink-faint); margin-top: -1rem;">Sources: Qatar Petroleum project announcements, IEA production data, independent MBAL reconstruction. Rows in amber are forward projections based on announced North Field East expansion plans.</p>
+
+    <div class="callout red">
+      <p><strong>Key finding:</strong> SEC 2P proved reserves remaining ranged from 7.5 Tcf (1991) to a projected maximum of 134 Tcf (2030), with typical values in the 60–105 Tcf range. Qatar's static 900 Tcf figure is 7–14× higher than SEC-compliant proved reserves at any point in the field's history.</p>
+    </div>
+
+  </div>
+
+  <hr class="rule-heavy">
+
+  <!-- SECTION 04 -->
+  <div class="section" id="section-04">
+    <span class="section-number">Section 04</span>
+    <h1 class="section-title">Condensate Reserve Analysis (CGR-Adjusted)</h1>
+
+    <div class="body-text">
+      <p>This section analyzes Qatar's condensate reserve statements against the CGR-adjusted physical ceiling derived from independent MBAL analysis. The analysis reveals systematic overstatement culminating in thermodynamically impossible claims in 2024.</p>
+    </div>
+
+    <h2 class="subsection">CGR-adjusted GIIP-c calculation</h2>
+
+    <div class="body-text">
+      <p>Gas-initial-in-place for condensate (GIIP-c) is calculated using the condensate-gas ratio (CGR) and the total gas OGIP:</p>
+
+      <p style="margin-left: 2rem; font-family: var(--mono); font-size: 0.9rem;">GIIP-c = OGIP × CGR × ρ_condensate</p>
+
+      <p>Where:</p>
+    </div>
+
+    <div class="glossary-grid" style="margin: 1.5rem 0 1.5rem 2rem; font-size: 0.9rem;">
+      <div class="gloss-term">OGIP</div>
+      <div class="gloss-def">Original gas in place = 1,290 Tcf (MBAL best estimate)</div>
+
+      <div class="gloss-term">CGR</div>
+      <div class="gloss-def">Condensate-gas ratio = 40 bbl/MMscf (North Field average)</div>
+
+      <div class="gloss-term">ρ_condensate</div>
+      <div class="gloss-def">Condensate density correction factor for two-phase behavior</div>
+    </div>
+
+    <div class="body-text">
+      <p>This yields a GIIP-c of approximately 51.6 billion barrels. The maximum recoverable condensate depends on the recovery factor, which is constrained by reservoir pressure, gas cycling efficiency, and condensate dropout behavior.</p>
+
+      <p>MBAL analysis incorporating CGR phase-behaviour and two-phase Z-factor correction suggests a maximum recoverable condensate of approximately 34.1 billion barrels at discovery (1971), declining to 29.1 billion barrels by 2024 due to production.</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-value">51.6 Bn bbl</div>
+        <div class="stat-label">GIIP-c Physical Ceiling</div>
+        <div class="stat-sub">CGR-adjusted condensate in place</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value green">34.1 Bn bbl</div>
+        <div class="stat-label">Max Recoverable (1971)</div>
+        <div class="stat-sub">At discovery, before production</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value green">29.1 Bn bbl</div>
+        <div class="stat-label">Max Recoverable (2024)</div>
+        <div class="stat-sub">After cumulative production</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value red">>80 Bn bbl</div>
+        <div class="stat-label">Al-Kaabi 2024 Claim</div>
+        <div class="stat-sub">Exceeds GIIP-c by 55%</div>
+      </div>
+    </div>
+
+    <h2 class="subsection">Analysis of official statements</h2>
+
+    <div class="body-text">
+      <p>Qatar's condensate reserve claims have evolved through several distinct phases, each marked by progressively more aggressive statements that ultimately exceed physical constraints:</p>
+    </div>
+
+    <h3 class="subsubsection">Phase 1 (1985–2000): Conservative understatement</h3>
+
+    <div class="body-text">
+      <p>Mobil's 1985 appraisal estimated approximately 1.5 billion barrels of recoverable condensate, representing a very conservative 2.9% recovery factor. By 2000, Qatar Petroleum had revised this upward to approximately 10 billion barrels (19.4% RF), still well within plausible bounds.</p>
+    </div>
+
+    <h3 class="subsubsection">Phase 2 (2000–2020): Reasonable growth</h3>
+
+    <div class="body-text">
+      <p>The Oil & Gas Journal's 2011 independent estimate of ~16 billion barrels (31% RF) provided external validation. Qatar's ~2020 estimate of ~22.3 billion barrels (43% RF) was aggressive but technically feasible with enhanced recovery techniques.</p>
+    </div>
+
+    <h3 class="subsubsection">Phase 3 (2024): Physical impossibility</h3>
+
+    <div class="body-text">
+      <p>The 2024 trajectory reveals a systematic breakdown in disclosure quality. Two separate issues emerge:</p>
+    </div>
+
+    <div class="callout amber">
+      <p><strong>The "phantom 70 billion barrel baseline":</strong> Between the 2020 statement (~22.3 billion barrels) and the 2024 Al-Kaabi claim (>80 billion barrels), Qatar appears to have established an undisclosed intermediate baseline of approximately 70 billion barrels. This figure appears in no official statement but is necessary to reconcile the 2024 claim with prior statements.</p>
+      
+      <p>The 70 billion barrel baseline would imply a 135.7% recovery factor — already exceeding the GIIP-c physical ceiling of 51.6 billion barrels by 36%. No technical justification for this baseline has been disclosed.</p>
+    </div>
+
+    <div class="callout red">
+      <p><strong>Al-Kaabi's ">80 billion barrels" claim:</strong> In 2024, Qatar Energy CEO Saad Sherida Al-Kaabi stated that recoverable condensate reserves exceed 80 billion barrels. This figure exceeds the GIIP-c physical ceiling by approximately 55%, requiring an impossible recovery factor of >155%.</p>
+      
+      <p>This is not a matter of aggressive optimism or technical disagreement about recovery factors. It is a thermodynamic impossibility: you cannot recover more condensate than physically exists in the reservoir, even with perfect recovery efficiency.</p>
+    </div>
+
+  </div>
+
+  <hr class="rule-heavy">
+
+  <!-- SECTION 05 -->
+  <div class="section" id="section-05">
+    <span class="section-number">Section 05</span>
+    <h1 class="section-title">Specific Inconsistencies and Areas of Concern</h1>
+
+    <div class="body-text">
+      <p>This section catalogues specific inconsistencies, omissions, and areas of concern in Qatar's reserve reporting that violate or appear incompatible with SEC Regulation S-X Rule 4-10 and SPE-PRMS 2018 guidelines.</p>
+    </div>
+
+    <h2 class="subsection">1. Static reserves despite massive production</h2>
+
+    <div class="body-text">
+      <p>Qatar's official proved reserves have remained essentially static at ~900 Tcf from approximately 1997 through 2024, despite cumulative production of 258 Tcf. This implies that either:</p>
+    </div>
+
+    <div class="callout">
+      <ul>
+        <li><strong>Scenario A:</strong> Qatar has continuously discovered or booked new proved reserves exactly offsetting production (258 Tcf of new proved reserves over 27 years), or</li>
+        <li><strong>Scenario B:</strong> The "proved" figure actually represents OGIP or total resource base, not remaining proved reserves</li>
+      </ul>
+      <p style="margin-top: 1rem;">Scenario A is implausible: no new major gas structures have been discovered in the Qatari North Field sector since the original 1971 discovery. Scenario B is consistent with the evidence but represents a fundamental misclassification of reserves category.</p>
+    </div>
+
+    <h2 class="subsection">2. Absence of reserves reconciliation</h2>
+
+    <div class="body-text">
+      <p>SEC Regulation S-X Rule 4-10 and SPE-PRMS 2018 recommend (and in some contexts require) annual reserves reconciliation showing:</p>
+    </div>
+
+    <div class="glossary-grid" style="margin: 1.5rem 0;">
+      <div class="gloss-term">Beginning balance</div>
+      <div class="gloss-def">Proved reserves at start of year</div>
+
+      <div class="gloss-term">+ Revisions</div>
+      <div class="gloss-def">Changes due to improved data or reservoir performance</div>
+
+      <div class="gloss-term">+ Extensions</div>
+      <div class="gloss-def">Additional reserves in existing fields</div>
+
+      <div class="gloss-term">+ Discoveries</div>
+      <div class="gloss-def">New field discoveries</div>
+
+      <div class="gloss-term">− Production</div>
+      <div class="gloss-def">Volume extracted during the year</div>
+
+      <div class="gloss-term">= Ending balance</div>
+      <div class="gloss-def">Proved reserves at end of year</div>
+    </div>
+
+    <div class="body-text">
+      <p>Qatar has never published such a reconciliation. Without this disclosure, it is impossible to understand how proved reserves have remained static despite massive production, or to verify the technical basis for any reserve additions.</p>
+    </div>
+
+    <h2 class="subsection">3. Ambiguous terminology</h2>
+
+    <div class="body-text">
+      <p>Qatar uses the term "proved" without clarifying whether this refers to:</p>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-caption">Table 4 — SPE-PRMS reserves categories and Qatar's usage</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Definition</th>
+            <th>Typical North Field Value (Tcf)</th>
+            <th>Qatar Uses This Term?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-bold">1P (Proved only)</td>
+            <td>P90 confidence, developed + undeveloped</td>
+            <td class="td-right">60–134 (SEC 2P range)</td>
+            <td>Unclear</td>
+          </tr>
+          <tr>
+            <td class="td-bold">2P (Proved + Probable)</td>
+            <td>P50 confidence, best estimate</td>
+            <td class="td-right">~200–250 (estimated)</td>
+            <td>Unclear</td>
+          </tr>
+          <tr>
+            <td class="td-bold">3P (Proved + Prob + Poss)</td>
+            <td>P10 confidence, includes contingent</td>
+            <td class="td-right">~400–500 (estimated)</td>
+            <td>Unclear</td>
+          </tr>
+          <tr>
+            <td class="td-bold">OGIP / GIIP</td>
+            <td>Original/gas-initial-in-place (all gas)</td>
+            <td class="td-right">~1,290 (MBAL estimate)</td>
+            <td class="highlight-amber">Likely what "proved" actually means</td>
+          </tr>
+          <tr>
+            <td class="td-bold">URG</td>
+            <td>Ultimate recoverable gas (at given RF)</td>
+            <td class="td-right">~1,032 (at 80% RF)</td>
+            <td>Possible</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 0.75rem; color: var(--ink-faint); margin-top: -1rem;">Sources: SPE-PRMS 2018 definitions, independent MBAL reconstruction, comparative analysis of Qatar statements</p>
+
+    <div class="body-text">
+      <p>The systematic ambiguity makes it impossible to compare Qatar's reserves with those of other operators using standard classification systems. This violates the transparency principles underlying SPE-PRMS and SEC guidelines.</p>
+    </div>
+
+    <h2 class="subsection">4. Inconsistency with partner disclosures</h2>
+
+    <div class="body-text">
+      <p>International partners operating in Qatar's North Field (including ExxonMobil, Shell, TotalEnergies, and ConocoPhillips) must comply with SEC and IFRS reserves reporting requirements in their home jurisdictions. Their reported proved reserves for North Field assets are systematically lower than would be implied by Qatar's 900 Tcf figure on a proportionate basis.</p>
+
+      <p>This suggests that international partners are booking reserves on a more conservative, SEC-compliant basis while Qatar uses a different (likely resource-based) classification system.</p>
+    </div>
+
+    <h2 class="subsection">5. Lack of independent verification</h2>
+
+    <div class="body-text">
+      <p>Qatar has not disclosed any independent third-party reserves audit by qualified petroleum reserves evaluators (e.g., DeGolyer & MacNaughton, Gaffney Cline, Ryder Scott). SEC guidelines and industry best practice strongly recommend periodic independent audits, particularly for reserves of this magnitude.</p>
+
+      <p>The absence of independent verification — combined with the systematic inconsistencies documented in this report — raises material questions about reserves classification and governance.</p>
+    </div>
+
+  </div>
+
+  <hr class="rule-heavy">
+
+  <!-- SECTION 06 -->
+  <div class="section" id="section-06">
+    <span class="section-number">Section 06</span>
+    <h1 class="section-title">Reconciliation Framework</h1>
+
+    <div class="body-text">
+      <p>This section proposes a reconciliation framework to align Qatar's reserve reporting with SEC Regulation S-X Rule 4-10 and SPE-PRMS 2018 standards. The framework addresses classification, disclosure, and verification requirements.</p>
+    </div>
+
+    <h2 class="subsection">Proposed classification corrections</h2>
+
+    <div class="table-wrap">
+      <div class="table-caption">Table 5 — Recommended reserves classification for Qatar North Field</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Value (Tcf)</th>
+            <th>Status</th>
+            <th>Disclosure Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-bold">OGIP (Total Resource)</td>
+            <td class="td-right">~1,290</td>
+            <td>Should be disclosed separately</td>
+            <td class="highlight-green">Disclose as "Original Gas In Place (OGIP)" — not as "proved reserves"</td>
+          </tr>
+          <tr>
+            <td class="td-bold">URG (Ultimate Recoverable)</td>
+            <td class="td-right">~1,032</td>
+            <td>Should be disclosed separately</td>
+            <td class="highlight-green">Disclose as "Ultimate Recoverable Gas at 80% RF" — not as "proved reserves"</td>
+          </tr>
+          <tr>
+            <td class="td-bold">SEC 2P Proved (Current)</td>
+            <td class="td-right">60–105</td>
+            <td>Actual proved reserves as of 2024</td>
+            <td class="highlight-green">Disclose as "Proved Reserves (SEC 2P)" with annual reconciliation</td>
+          </tr>
+          <tr>
+            <td class="td-bold">SEC 2P Proved (2030 Projected)</td>
+            <td class="td-right">~134</td>
+            <td>After NFE Phase 2 FID</td>
+            <td class="highlight-amber">Disclose as "Contingent Resources pending FID" until projects sanctioned</td>
+          </tr>
+          <tr>
+            <td class="td-bold">Current "Proved" (900 Tcf)</td>
+            <td class="td-right">900</td>
+            <td class="highlight-red">Misclassified — appears to be OGIP or URG</td>
+            <td class="highlight-red">Discontinue use of this figure as "proved reserves"</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="subsection">Required disclosures</h2>
+
+    <div class="body-text">
+      <p>To achieve compliance with international best practice, Qatar should implement the following disclosure framework:</p>
+    </div>
+
+    <div class="callout green">
+      <strong>Annual reserves reconciliation (required):</strong>
+      <ul>
+        <li>Beginning proved reserves (1P, 2P, 3P separately disclosed)</li>
+        <li>Revisions due to reservoir performance or price changes</li>
+        <li>Extensions and discoveries</li>
+        <li>Production (volumes and by-project breakdown)</li>
+        <li>Ending proved reserves</li>
+      </ul>
+    </div>
+
+    <div class="callout green">
+      <strong>Classification clarity (required):</strong>
+      <ul>
+        <li>Explicit statement of which SPE-PRMS category is being reported (1P/2P/3P)</li>
+        <li>Separate disclosure of OGIP, contingent resources, and prospective resources</li>
+        <li>Economic assumptions (price deck, discount rate, operating costs)</li>
+        <li>Technical parameters (recovery factor, production profiles)</li>
+      </ul>
+    </div>
+
+    <div class="callout green">
+      <strong>Independent verification (recommended):</strong>
+      <ul>
+        <li>Third-party reserves audit by qualified evaluator every 3–5 years</li>
+        <li>Public disclosure of audit scope and findings</li>
+        <li>Certification that reserves comply with SEC/SPE-PRMS standards</li>
+      </ul>
+    </div>
+
+    <h2 class="subsection">Condensate-specific corrections</h2>
+
+    <div class="body-text">
+      <p>For condensate reserves, the following corrections are necessary to achieve physical consistency:</p>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-caption">Table 6 — Recommended condensate classification corrections</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Classification</th>
+            <th>Physical Limit (Bn bbl)</th>
+            <th>Recommended Disclosure</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-bold">GIIP-c (Physical Ceiling)</td>
+            <td class="td-right">51.6</td>
+            <td>Disclose as "Condensate-In-Place (GIIP-c)"</td>
+            <td class="highlight-green">Must be disclosed separately</td>
+          </tr>
+          <tr>
+            <td class="td-bold">Maximum Recoverable (2024)</td>
+            <td class="td-right">29.1</td>
+            <td>Disclose as "Maximum Technically Recoverable (CGR-adjusted)"</td>
+            <td class="highlight-green">Upper bound for all reserve claims</td>
+          </tr>
+          <tr>
+            <td class="td-bold">2P Proved (Estimated Range)</td>
+            <td class="td-right">18–25</td>
+            <td>Disclose as "Proved Condensate Reserves (2P)" with RF assumptions</td>
+            <td class="highlight-green">Realistic current proved reserves</td>
+          </tr>
+          <tr>
+            <td class="td-bold">Current "70 Bn bbl baseline"</td>
+            <td class="td-right">70</td>
+            <td class="highlight-red">Discontinue — exceeds GIIP-c by 36%</td>
+            <td class="highlight-red">Physically impossible</td>
+          </tr>
+          <tr>
+            <td class="td-bold">Al-Kaabi ">80 Bn bbl"</td>
+            <td class="td-right">>80</td>
+            <td class="highlight-red">Retract — exceeds GIIP-c by 55%</td>
+            <td class="highlight-red">Thermodynamically impossible</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <hr class="rule-heavy">
+
+  <!-- SECTION 07 -->
+  <div class="section" id="section-07">
+    <span class="section-number">Section 07</span>
+    <h1 class="section-title">Conclusions</h1>
+
+    <div class="body-text">
+      <p>This report has presented a systematic assessment of Qatar's official reserve statements for the North Field gas accumulation against independent MBAL-derived estimates and SEC Regulation S-X Rule 4-10 standards. The analysis reveals material inconsistencies in classification, reporting completeness, and physical plausibility.</p>
+    </div>
+
+    <h2 class="subsection">Summary of findings</h2>
+
+    <div class="body-text">
+      <p>Qatar's official "proved reserves" figure of ~900 Tcf appears to represent original gas in place (OGIP) or ultimate recoverable gas (URG) rather than proved reserves as defined by SEC guidelines. Independent MBAL analysis yields:</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-value">~1,290 Tcf</div>
+        <div class="stat-label">MBAL OGIP</div>
+        <div class="stat-sub">Total gas in place</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">~1,032 Tcf</div>
+        <div class="stat-label">URG (80% RF)</div>
+        <div class="stat-sub">Ultimate recoverable</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value amber">60–134 Tcf</div>
+        <div class="stat-label">SEC 2P Proved</div>
+        <div class="stat-sub">Actual proved reserves</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value red">~900 Tcf</div>
+        <div class="stat-label">Qatar "Proved"</div>
+        <div class="stat-sub">7–14× overstatement</div>
+      </div>
+    </div>
+
+    <div class="body-text">
+      <p>The SEC 2P proved reserves (60–134 Tcf depending on development stage) represent the actual volume that should be classified as "proved" under international standards. Qatar's 900 Tcf figure is 7–14 times larger than this range and shows no year-over-year variation despite massive cumulative production of 258 Tcf.</p>
+
+      <p>For condensate, the situation is even more problematic. Qatar's 2024 claim of ">80 billion barrels" exceeds the independently-assessed physical ceiling (GIIP-c of 51.6 billion barrels) by approximately 55%, requiring an impossible recovery factor above 155%. This is not a matter of technical disagreement — it represents a thermodynamic impossibility.</p>
+    </div>
+
+    <h2 class="subsection">Implications</h2>
+
+    <div class="body-text">
+      <p>The discrepancies documented in this report carry material implications for:</p>
+    </div>
+
+    <div class="callout amber">
+      <strong>Global gas markets:</strong> If Qatar's actual proved reserves are closer to 60–134 Tcf rather than 900 Tcf, this represents a ~770–840 Tcf overstatement that could significantly affect global supply forecasts, LNG price formation, and investment decisions in competing supply regions.
+    </div>
+
+    <div class="callout amber">
+      <strong>Financial markets:</strong> International investors, lenders, and project partners may be making decisions based on reserve figures that do not conform to SEC or SPE-PRMS standards, potentially leading to mispriced risk.
+    </div>
+
+    <div class="callout amber">
+      <strong>Regulatory compliance:</strong> Qatar Energy and its international partners operate in multiple jurisdictions with varying reserves reporting requirements. The systematic inconsistencies documented here raise questions about compliance with SEC, IFRS, and other regulatory frameworks.
+    </div>
+
+    <h2 class="subsection">Recommendations</h2>
+
+    <div class="body-text">
+      <p>This report recommends that Qatar implement the following measures to align its reserves reporting with international best practice:</p>
+    </div>
+
+    <div class="callout green">
+      <ol style="padding-left: 1.5rem;">
+        <li style="margin-bottom: 0.75rem;"><strong>Classify reserves according to SPE-PRMS 2018:</strong> Clearly distinguish between OGIP, URG, 3P, 2P, and 1P reserves, with explicit disclosure of which category is being reported as "proved reserves"</li>
+        
+        <li style="margin-bottom: 0.75rem;"><strong>Publish annual reserves reconciliation:</strong> Disclose beginning balance, revisions, extensions, discoveries, production, and ending balance on an annual basis</li>
+        
+        <li style="margin-bottom: 0.75rem;"><strong>Correct condensate claims to physical constraints:</strong> Retract claims exceeding GIIP-c and disclose condensate reserves within the 18–29 Bn bbl range supported by CGR-adjusted MBAL analysis</li>
+        
+        <li style="margin-bottom: 0.75rem;"><strong>Commission independent third-party audit:</strong> Engage a qualified petroleum reserves evaluator to certify reserves according to SEC and SPE-PRMS standards</li>
+        
+        <li style="margin-bottom: 0.75rem;"><strong>Disclose economic and technical assumptions:</strong> Make public the price deck, discount rate, recovery factor, and other key assumptions underlying reserves estimates</li>
+      </ol>
+    </div>
+
+    <div class="body-text">
+      <p>Implementation of these recommendations would bring Qatar's reserves reporting into alignment with international standards and restore transparency to one of the world's most significant natural gas resources.</p>
+    </div>
+
+  </div>
+
+  <hr class="rule-heavy">
+
+  <!-- GLOSSARY -->
+  <div class="section" id="glossary">
+    <span class="section-number">Glossary</span>
+    <h1 class="section-title">Key Terms</h1>
+
+    <div class="glossary-grid">
+      <div class="gloss-term">OGIP</div>
+      <div class="gloss-def">Original Gas In Place — the total volume of gas in a reservoir before any production</div>
+
+      <div class="gloss-term">GIIP-c</div>
+      <div class="gloss-def">Gas-Initial-In-Place for Condensate — the total volume of condensate in a gas-condensate reservoir</div>
+
+      <div class="gloss-term">URG</div>
+      <div class="gloss-def">Ultimate Recoverable Gas — the total volume expected to be recovered over the field's entire life, typically expressed as OGIP × recovery factor</div>
+
+      <div class="gloss-term">1P / 2P / 3P</div>
+      <div class="gloss-def">SPE-PRMS reserves categories: 1P (proved only), 2P (proved + probable), 3P (proved + probable + possible)</div>
+
+      <div class="gloss-term">SEC 2P</div>
+      <div class="gloss-def">Proved reserves as defined by SEC Regulation S-X Rule 4-10 — those quantities recoverable with "reasonable certainty" (P90)</div>
+
+      <div class="gloss-term">MBAL</div>
+      <div class="gloss-def">Material Balance Analysis — petroleum engineering technique using production and pressure data to estimate OGIP and reservoir performance</div>
+
+      <div class="gloss-term">p/z</div>
+      <div class="gloss-def">Pressure/Z-factor plot — a material balance technique where a linear trend indicates volumetric depletion</div>
+
+      <div class="gloss-term">CGR</div>
+      <div class="gloss-def">Condensate-Gas Ratio — volume of condensate per unit of gas, typically measured in barrels per million standard cubic feet (bbl/MMscf)</div>
+
+      <div class="gloss-term">Recovery Factor (RF)</div>
+      <div class="gloss-def">The percentage of OGIP or GIIP that can be economically recovered, typically 60–85% for gas reservoirs</div>
+
+      <div class="gloss-term">FID</div>
+      <div class="gloss-def">Final Investment Decision — the point at which a project is sanctioned and contingent resources convert to proved reserves under SEC guidelines</div>
+
+      <div class="gloss-term">SPE-PRMS</div>
+      <div class="gloss-def">Society of Petroleum Engineers Petroleum Resources Management System — international standard for reserves classification (current version: 2018)</div>
+
+      <div class="gloss-term">Tcf</div>
+      <div class="gloss-def">Trillion cubic feet — standard unit for large gas volumes (1 Tcf ≈ 28.3 billion cubic meters)</div>
+
+      <div class="gloss-term">Bn bbl</div>
+      <div class="gloss-def">Billion barrels — standard unit for liquid hydrocarbon volumes</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- REFERENCES -->
+<div class="references" id="references">
+  <div class="container">
+    <h2 class="subsection" style="margin-top: 0; margin-bottom: 1.5rem;">References</h2>
+    <ol class="ref-list">
+      <li>U.S. Securities and Exchange Commission. (2008). <em>Regulation S-X Rule 4-10: Financial Accounting and Reporting for Oil and Gas Producing Activities</em>. 17 CFR §210.4-10.</li>
+      
+      <li>Society of Petroleum Engineers. (2018). <em>Petroleum Resources Management System (SPE-PRMS)</em>. <a href="https://www.spe.org/en/industry/reserves/" target="_blank" rel="noopener">spe.org</a></li>
+      
+      <li>International Energy Agency. (2023). <em>World Energy Outlook 2023: Natural Gas Section</em>. Paris: IEA Publications.</li>
+      
+      <li>Qatar Petroleum. (Various years). <em>Annual Reports and Sustainability Reports</em>. Doha: Qatar Petroleum.</li>
+      
+      <li>Al-Kaabi, S. S. (2024). Public statements on Qatar North Field reserves. Doha Energy Forum, March 2024.</li>
+      
+      <li>Oil & Gas Journal. (2011). "Worldwide look at reserves and production." <em>Oil & Gas Journal</em>, 109(49), 44–45.</li>
+      
+      <li>Mobil. (1985). <em>North Field Appraisal Technical Report</em>. Internal technical document (referenced in subsequent public disclosures).</li>
+      
+      <li>"Qatar North Field: Independent Material Balance Assessment and Volumetric Analysis — Methodology for OGIP Estimation, p/z Analysis, CGR Phase-Behaviour Modeling, and Two-Phase Z-Factor Correction." (2026). <em>SSRN Electronic Journal</em>. <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6513138" target="_blank" rel="noopener">ssrn.com/abstract=6513138</a></li>
+      
+      <li>McCain, W. D. (1990). <em>The Properties of Petroleum Fluids</em> (2nd ed.). Tulsa: PennWell Books.</li>
+      
+      <li>Ahmed, T. (2018). <em>Reservoir Engineering Handbook</em> (5th ed.). Cambridge: Gulf Professional Publishing.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <span class="footer-brand">The Anglophone Blind Spot</span>
+  <p>Independent investigative journalism. <a href="https://ivanapark1.substack.com">Subscribe on Substack</a>.</p>
+  <p style="margin-top: 0.75rem; font-size: 0.72rem; opacity: 0.6;">All estimates are presented as ranges and clearly labelled as estimates where they are not directly sourced. Methodology for MBAL calculations and CGR analysis is fully disclosed in Reference 8. &copy; The Anglophone Blind Spot, 2026.</p>
+</footer>
+
+<!-- CHARTS -->
+<script>
+const C = {
+  blue: '#185FA5',
+  blueLight: 'rgba(24, 95, 165, 0.15)',
+  green: '#0F6E56',
+  greenLight: 'rgba(15, 110, 86, 0.15)',
+  amber: '#854F0B',
+  amberLight: 'rgba(133, 79, 11, 0.15)',
+  red: '#A32D2D',
+  redLight: 'rgba(163, 45, 45, 0.15)',
+  gray: '#5F5E5A'
+};
+
+// ─── Figure 1: Historical chart ──────────────────────
+const years = [1971,1975,1980,1985,1990,1991,1997,2000,2002,2004,2006,2010,2015,2020,2021,2024,2025,2026,2028,2030,2033,2035];
+const qatarOfficial = years.map(y => y < 1997 ? null : 900);
+const mbalOGIP = years.map(() => 1290);
+
+// SEC 2P staircase
+const secData = [
+  {y:1971,v:0},{y:1991,v:7.5},{y:1997,v:36},{y:2002,v:78},{y:2006,v:129},
+  {y:2010,v:115},{y:2015,v:110},{y:2020,v:108},{y:2021,v:105},
+  {y:2024,v:62},{y:2025,v:60},{y:2026,v:60},{y:2028,v:38},
+  {y:2030,v:134},{y:2033,v:96},{y:2035,v:72}
+];
+const sec2P = years.map(y => {
+  const match = secData.find(d => d.y === y);
+  return match ? match.v : null;
+});
+const secHigh = sec2P.map(v => v ? v * 1.15 : null);
+const secLow = sec2P.map(v => v ? v * 0.85 : null);
+
+const histCtx = document.getElementById('historicalChart').getContext('2d');
+new Chart(histCtx, {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [
+      {
+        label: 'Qatar Official Proved (900 Tcf static)',
+        data: qatarOfficial,
+        borderColor: C.red, borderWidth: 3,
+        borderDash: [8,4], pointRadius: 0,
+        backgroundColor: 'transparent', tension: 0
+      },
+      {
+        label: 'MBAL OGIP (~1,290 Tcf)',
+        data: mbalOGIP,
+        borderColor: C.green, borderWidth: 2.5,
+        pointRadius: 0, backgroundColor: 'transparent', tension: 0
+      },
+      {
+        label: 'SEC 2P Proved (FID staircase)',
+        data: sec2P,
+        borderColor: C.blue, borderWidth: 2.5,
+        pointRadius: 5, pointBackgroundColor: C.blue,
+        backgroundColor: 'transparent', stepped: 'before',
+        tension: 0.1, fill: false
+      },
+      {
+        label: 'SEC 2P Proved — High (±15%)',
+        data: secHigh,
+        borderColor: 'transparent', backgroundColor: C.blueLight,
+        borderWidth: 0, pointRadius: 0, fill: '+1'
+      },
+      {
+        label: 'SEC 2P Proved — Low (±15%)',
+        data: secLow,
+        borderColor: 'transparent', backgroundColor: C.blueLight,
+        borderWidth: 0, pointRadius: 0, fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        labels: { font: { size: 11, family: "'JetBrains Mono', monospace" }, boxWidth: 20,
+          filter: item => !item.text.includes('High') && !item.text.includes('Low')
+        }
+      },
+      tooltip: { mode: 'index', intersect: false }
+    },
+    scales: {
+      x: { 
+        title: { display: true, text: 'Year', font: { size: 12, family: "'JetBrains Mono', monospace" } }, 
+        ticks: { autoSkip: false, maxRotation: 45, font: { size: 10 } } 
+      },
+      y: { 
+        title: { display: true, text: 'Tcf', font: { size: 12, family: "'JetBrains Mono', monospace" } }, 
+        min: 0, max: 2200,
+        ticks: { font: { size: 11 } } 
+      }
+    }
+  }
+});
+
+// ─── Figure 2: SEC staircase chart ──────────────────────
+const secYears = [1991,1997,2002,2006,2021,2026,2028,2030,2033,2035];
+const secRemaining = [7.5, 36, 78, 129, 105, 60, 38, 134, 96, 72];
+const qatarLine = secYears.map(() => 900);
+
+const secCtx = document.getElementById('secChart').getContext('2d');
+new Chart(secCtx, {
+  type: 'line',
+  data: {
+    labels: secYears,
+    datasets: [
+      {
+        label: 'Qatar Official Proved (900 Tcf static)',
+        data: qatarLine,
+        borderColor: C.red, borderWidth: 2.5,
+        borderDash: [], pointRadius: 0, backgroundColor: 'transparent', tension: 0
+      },
+      {
+        label: 'SEC 2P Proved Remaining (FID staircase)',
+        data: secRemaining,
+        borderColor: C.blue, backgroundColor: C.blueLight,
+        borderWidth: 2.5, pointRadius: 6,
+        pointBackgroundColor: secYears.map(y => y > 2025 ? C.amber : C.blue),
+        pointBorderColor: secYears.map(y => y > 2025 ? C.amber : C.blue),
+        stepped: 'before', fill: 'origin', tension: 0
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { font: { size: 11, family: "'JetBrains Mono', monospace" }, boxWidth: 18 } },
+      tooltip: { callbacks: {
+        label: ctx => `${ctx.dataset.label}: ${ctx.raw} Tcf`
+      }}
+    },
+    scales: {
+      x: { title: { display: true, text: 'Year', font: { size: 12, family: "'JetBrains Mono', monospace" } } },
+      y: { title: { display: true, text: 'Tcf', font: { size: 12, family: "'JetBrains Mono', monospace" } }, min: 0, max: 1000 }
+    }
+  }
+});
+
+// ─── Figure 3: Condensate chart ──────────────────────────
+const condCtx = document.getElementById('condensateChart').getContext('2d');
+
+const mbalCondYears = [1971,1985,2000,2010,2015,2020,2024,2025];
+const mbalCondRemaining = [34.1, 33.9, 33.5, 31.5, 30.5, 29.5, 29.1, 29.1];
+
+new Chart(condCtx, {
+  type: 'scatter',
+  data: {
+    datasets: [
+      {
+        label: 'MBAL CGR-Adj Max Recoverable',
+        data: mbalCondYears.map((y,i)=>({x:y, y:mbalCondRemaining[i]})),
+        type: 'line', borderColor: C.green, backgroundColor: 'transparent',
+        borderWidth: 2, pointRadius: 3, showLine: true, tension: 0.2
+      },
+      {
+        label: 'Qatar Official Recoverable (Bn bbl)',
+        data: [{x:2000,y:10},{x:2011,y:16},{x:2020,y:22.3}],
+        borderColor: C.amber, backgroundColor: C.amber,
+        pointRadius: 7, pointStyle: 'circle', showLine: false
+      },
+      {
+        label: 'Phantom 70 Bn bbl baseline (2024)',
+        data: [{x:2024.1, y:70}],
+        borderColor: C.amber, backgroundColor: '#ffc107',
+        pointRadius: 10, pointStyle: 'crossRot', borderWidth: 2.5, showLine: false
+      },
+      {
+        label: 'Al-Kaabi 2024: >80 Bn bbl (impossible)',
+        data: [{x:2024.4, y:80}],
+        borderColor: C.red, backgroundColor: C.red,
+        pointRadius: 10, pointStyle: 'cross', borderWidth: 2.5, showLine: false
+      },
+      {
+        label: 'OGJ 2011 independent estimate (~16 Bn bbl)',
+        data: [{x:2011.3, y:16}],
+        borderColor: C.blue, backgroundColor: C.blue,
+        pointRadius: 8, pointStyle: 'triangle', showLine: false
+      },
+      {
+        label: 'Physical ceiling (GIIP-c = 51.6 Bn bbl)',
+        data: [{x:1971,y:51.6},{x:2035,y:51.6}],
+        type:'line', borderColor: C.gray, borderWidth:1.5, borderDash:[5,5],
+        pointRadius:0, showLine:true, backgroundColor:'transparent'
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { font: { size: 10, family: "'JetBrains Mono', monospace" }, boxWidth: 14 } },
+      tooltip: { callbacks: {
+        label: ctx => `${ctx.dataset.label}: ${ctx.raw.y} Bn bbl`
+      }}
+    },
+    scales: {
+      x: { title: { display: true, text: 'Year', font: { size: 12, family: "'JetBrains Mono', monospace" } }, min: 1975, max: 2030 },
+      y: { title: { display: true, text: 'Condensate (Bn bbl)', font: { size: 12, family: "'JetBrains Mono', monospace" } }, min: 0, max: 95 }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
