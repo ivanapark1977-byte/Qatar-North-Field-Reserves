@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qatar North Field – Gas Production and Recovery Forecast</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Linux+Libertine+O&family=Source+Sans+3:wght@300;400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --page-bg: #f8f9fa;
+  --box-bg: #ffffff;
+  --box-border: #a2a9b1;
+  --box-header: #eaecf0;
+  --box-header-border: #a2a9b1;
+  --text: #202122;
+  --text-muted: #54595d;
+  --text-light: #72777d;
+  --link: #3366cc;
+  --blue:   #2196a5;   /* teal-blue — production */
+  --green:  #4a7c59;   /* muted green — NFE */
+  --amber:  #b07d2a;   /* gold — NFS */
+  --red:    #a94442;   /* muted red — natural decline */
+  --purple: #6b5b95;   /* purple — NFW */
+  --teal:   #337ab7;   /* classic wiki blue — NFPS */
+  --orange: #c0622f;   /* orange — future */
+  --grey:   #72777d;
+  --serif: 'Source Serif 4', 'Linux Libertine O', Georgia, serif;
+  --sans:  'Source Sans 3', 'Helvetica Neue', Arial, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+body {
+  font-family: var(--sans);
+  background: var(--page-bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding: 20px 16px 40px;
+}
+
+/* ── Page title ── */
+.page-title {
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  font-weight: 400;
+  color: var(--text);
+  border-bottom: 1px solid var(--box-border);
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.page-sub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  max-width: 960px;
+  margin: 0 auto 20px;
+  font-style: italic;
+}
+
+/* ── Main infobox-style wrapper ── */
+.wiki-figure {
+  background: var(--box-bg);
+  border: 1px solid var(--box-border);
+  max-width: 960px;
+  margin: 0 auto 16px;
+  font-size: 0.88rem;
+}
+
+.fig-header {
+  background: var(--box-header);
+  border-bottom: 1px solid var(--box-header-border);
+  padding: 8px 14px;
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.fig-header .fig-num {
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 0.82rem;
+  font-family: var(--sans);
+}
+
+/* ── Controls bar ── */
+.controls-bar {
+  background: #f1f3f5;
+  border-bottom: 1px solid #d4d9de;
+  padding: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+/* View tabs — wiki-style */
+.view-tabs {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--box-border);
+  border-radius: 3px;
+  overflow: hidden;
+  align-self: flex-start;
+}
+.view-tab {
+  padding: 5px 12px;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--box-bg);
+  border: none;
+  border-right: 1px solid var(--box-border);
+  cursor: pointer;
+  color: var(--link);
+  transition: background .12s;
+  white-space: nowrap;
+}
+.view-tab:last-child { border-right: none; }
+.view-tab:hover { background: #eaf3fb; }
+.view-tab.active { background: var(--box-header); color: var(--text); cursor: default; }
+
+/* Inline sliders */
+.ctrl-inline {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.ctrl-inline label { font-weight: 600; color: var(--text); }
+.ctrl-inline .val {
+  font-weight: 700;
+  color: var(--link);
+  min-width: 52px;
+  text-align: right;
+  font-size: 0.8rem;
+}
+input[type=range] {
+  -webkit-appearance: none;
+  width: 110px; height: 4px;
+  background: #c8ccd1;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px; height: 13px;
+  background: var(--link);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Scenario toggle */
+.scenario-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.scenario-row label { cursor: pointer; display: flex; align-items: center; gap: 4px; color: var(--text); }
+.scenario-row input[type=checkbox] { cursor: pointer; width: 13px; height: 13px; accent-color: var(--red); }
+
+/* ── Chart canvas ── */
+.chart-wrap {
+  padding: 12px 16px 8px;
+  background: var(--box-bg);
+}
+canvas { width: 100% !important; }
+
+/* ── Project toggles table ── */
+.proj-section {
+  border-top: 1px solid #d4d9de;
+  padding: 10px 14px 12px;
+  background: #f8f9fa;
+}
+.proj-section-title {
+  font-family: var(--sans);
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 6px;
+}
+.proj-row {
+  display: grid;
+  grid-template-columns: 16px 1fr auto auto;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  background: var(--box-bg);
+  border: 1px solid #d4d9de;
+  border-radius: 3px;
+  transition: opacity .2s, border-color .2s;
+}
+.proj-row.disabled { opacity: .45; }
+.proj-row.locked { opacity: 1; }
+.proj-swatch { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+.proj-info { min-width: 0; }
+.proj-name {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+.proj-cap {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+.proj-status {
+  font-size: 0.62rem;
+  padding: 1px 5px;
+  border-radius: 2px;
+  white-space: nowrap;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.s-op  { background: #d4edda; color: #155724; }
+.s-fid { background: #cce5ff; color: #004085; }
+.s-pre { background: #fff3cd; color: #856404; }
+.s-con { background: #f8d7da; color: #721c24; }
+
+.proj-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  flex-shrink: 0;
+}
+.proj-toggle-wrap { display: flex; align-items: center; gap: 4px; }
+.proj-toggle-wrap label { font-size: 0.68rem; color: var(--text-muted); cursor: pointer; }
+.proj-toggle-wrap input { cursor: pointer; accent-color: var(--link); }
+.proj-start-wrap { display: flex; align-items: center; gap: 4px; font-size: 0.67rem; color: var(--text-muted); }
+.proj-start-wrap input[type=range] { width: 70px; }
+.proj-start-wrap .yr { font-weight: 700; color: var(--link); min-width: 28px; text-align: right; }
+
+/* ── Caption ── */
+.fig-caption {
+  border-top: 1px solid #d4d9de;
+  padding: 8px 14px 10px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.55;
+  background: var(--box-bg);
+}
+.fig-caption strong { font-style: normal; color: var(--text); }
+.fig-caption .src { margin-top: 4px; font-size: 0.72rem; }
+
+/* ── Stat row ── */
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-top: 1px solid #d4d9de;
+  border-bottom: 1px solid #d4d9de;
+  background: var(--box-bg);
+}
+.stat-cell {
+  flex: 1;
+  min-width: 110px;
+  padding: 7px 14px;
+  border-right: 1px solid #eaecf0;
+  text-align: center;
+}
+.stat-cell:last-child { border-right: none; }
+.stat-label { font-size: 0.66rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 1px; }
+.stat-val { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; color: var(--text); }
+.stat-unit { font-size: 0.68rem; color: var(--text-muted); }
+
+/* ── Notes box ── */
+.notes-box {
+  max-width: 960px;
+  margin: 0 auto;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  border-left: 3px solid #a2a9b1;
+  padding: 8px 12px;
+  background: var(--box-bg);
+  border: 1px solid #d4d9de;
+  line-height: 1.6;
+}
+.notes-box strong { color: var(--text); }
+</style>
+</head>
+<body>
+
+<div class="page-title">Qatar North Field – Gas Production and Recovery Forecast</div>
+<p class="page-sub">Independent MBAL assessment · SPE-PRMS 2018 classification · Sources: EIA; BP Statistical Review; QatarEnergy Bond Prospectus (2021); Whitson &amp; Kuntadi (2005); Atilhan et al. (2012)</p>
+
+<div class="wiki-figure">
+
+  <div class="fig-header">
+    <span class="fig-num">Figure 1.</span>
+    Qatar North Field: Annual Gas Production Rate and Project-Level Forecast (1991–2070)
+  </div>
+
+  <!-- Controls bar -->
+  <div class="controls-bar">
+    <div class="view-tabs">
+      <button class="view-tab active" onclick="switchView('rate',this)">Production rate</button>
+      <button class="view-tab" onclick="switchView('cumulative',this)">Cumulative recovery</button>
+      <button class="view-tab" onclick="switchView('rf',this)">Recovery factor</button>
+      <button class="view-tab" onclick="switchView('remaining',this)">Remaining reserves</button>
+    </div>
+
+    <div class="ctrl-inline">
+      <label>OGIP:</label>
+      <input type="range" id="sl-ogip" min="900" max="1640" step="10" value="1290"
+        oninput="setParam('ogip',+this.value,'dv-ogip',v=>v+' Tcf')">
+      <span class="val" id="dv-ogip">1,290 Tcf</span>
+    </div>
+
+    <div class="ctrl-inline">
+      <label>RF:</label>
+      <input type="range" id="sl-rf" min="65" max="90" step="1" value="80"
+        oninput="setParam('rf',+this.value,'dv-rf',v=>v+'%')">
+      <span class="val" id="dv-rf">80%</span>
+    </div>
+
+    <div class="ctrl-inline">
+      <label>Decline:</label>
+      <input type="range" id="sl-decline" min="2" max="14" step="0.5" value="5"
+        oninput="setParam('decline',+this.value,'dv-decline',v=>v+'%/yr')">
+      <span class="val" id="dv-decline">5%/yr</span>
+    </div>
+
+    <div class="ctrl-inline">
+      <label>Natural decline (pre-NFPS):</label>
+      <input type="range" id="sl-natdecline" min="2" max="10" step="0.5" value="4"
+        oninput="setParam('natdecline',+this.value,'dv-natdecline',v=>v+'%/yr')">
+      <span class="val" id="dv-natdecline">4%/yr</span>
+    </div>
+
+    <div class="scenario-row">
+      <label><input type="checkbox" id="chk-nofps" onchange="render()"> Show without-NFPS counterfactual</label>
+    </div>
+  </div>
+
+  <!-- Stat row -->
+  <div class="stat-row" id="stat-row"></div>
+
+  <!-- Chart -->
+  <div class="chart-wrap" style="height:380px">
+    <canvas id="mainChart"></canvas>
+  </div>
+
+  <!-- Project toggles -->
+  <div class="proj-section">
+    <div class="proj-section-title">Project portfolio — toggle inclusion &amp; adjust start year</div>
+    <div class="proj-grid" id="proj-grid"></div>
+  </div>
+
+  <!-- Caption -->
+  <div class="fig-caption">
+    <strong>Notes on production model:</strong>
+    The existing 14 LNG trains plus Dolphin Pipeline and GTL plants contribute a base rate of ~18.5 Bcf/d as at end-2025.
+    Without the North Field Production Sustainability (NFPS) compression programme, natural reservoir pressure decline
+    (estimated ~<span id="cap-natdecline">4</span>%/yr from 2026) would erode this base.
+    NFPS (COMP 1–4, ~US$10 billion) is modelled as a <em>sustain offset</em> — it arrests the natural decline of the base trains,
+    not as an incremental addition. NFE, NFS, NFW and subsequent phases represent genuine incremental capacity.
+    The "without NFPS" counterfactual (dashed red) shows the base-train decline trajectory absent compression investment.
+    <div class="src">
+      <strong>Sources:</strong> EIA Qatar Country Analysis; BP Statistical Review of World Energy (2024);
+      QatarEnergy LNG Bond Prospectus (July 2021); Whitson &amp; Kuntadi, SPE/IPTC-10692 (2005);
+      Atilhan et al., <em>J. Chem. Thermodyn.</em> 51 (2012); SPE-130996; SPE-13679.
+      Qatar's official published reserve figures excluded as inputs per analytical brief.
+    </div>
+  </div>
+
+</div><!-- /wiki-figure -->
+
+<div class="notes-box">
+  <strong>Methodology note:</strong>
+  OGIP = 1,290 Tcf (composite: volumetric P50 1,346 Tcf averaged with two-phase Z-corrected MBAL mid-case 1,240 Tcf).
+  Recovery factor 80% (base; Bahrain Khuff analogue SPE-13679: 72% at 1,500 psia abandonment; NFPS compression enables lower abandonment).
+  Cumulative production to end-2025: ~130 Tcf. Average reservoir pressure: ~4,050 psia (~76% of initial 5,300 psia), below estimated dew point ~4,500 psia.
+  Classification per SPE-PRMS 2018: NFE &amp; NFS = Proved Undeveloped (FID taken); NFW = Contingent Resources 1C–2C (pre-FID); additional phases = Contingent 2C–3C.
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  DATA & STATE
+// ═══════════════════════════════════════════════════════
+const P = { ogip:1290, rf:80, decline:5, natdecline:4 };
+
+const HIST = {
+  1991:0.30,1992:0.40,1993:0.50,1994:0.55,1995:0.60,1996:0.65,
+  1997:1.00,1998:1.50,1999:2.00,2000:2.80,2001:3.50,2002:4.50,
+  2003:6.00,2004:7.50,2005:9.00,2006:10.50,2007:12.50,2008:14.00,
+  2009:15.50,2010:16.50,2011:17.00,2012:17.00,2013:16.80,2014:16.50,
+  2015:16.50,2016:16.30,2017:16.20,2018:16.40,2019:16.50,2020:16.40,
+  2021:16.80,2022:17.20,2023:17.50,2024:18.00,2025:18.50
+};
+
+// Projects — note: NFPS is 'sustain' type, others are 'incremental'
+const PROJECTS = [
+  {
+    id:'base', name:'14 Trains + Dolphin + GTL',
+    color:'#2196a5', capacity:18.5, startYear:1991,
+    enabled:true, locked:true, type:'base',
+    status:'op', statusLabel:'Operating',
+    rampYears:0, plateauYears:999, lifeYears:50,
+    minStart:1991, maxStart:1991,
+    cap:'77 Mtpa LNG + 4 Bcf/d domestic'
+  },
+  {
+    id:'nfps', name:'NFPS Compression (COMP 1–4)',
+    color:'#337ab7', capacity:0, startYear:2027,   // capacity=0 because it's a sustain, not increment
+    enabled:true, locked:false, type:'sustain',
+    status:'fid', statusLabel:'FID taken',
+    sustainUntil:2045,
+    minStart:2026, maxStart:2031,
+    cap:'Sustains base-train rate; ~US$10 billion'
+  },
+  {
+    id:'nfe', name:'North Field East (NFE)',
+    color:'#4a7c59', capacity:6.0, startYear:2026,
+    enabled:true, locked:false, type:'incremental',
+    status:'fid', statusLabel:'FID taken',
+    rampYears:3, plateauYears:7, lifeYears:25,
+    minStart:2025, maxStart:2030,
+    cap:'32 Mtpa LNG · ~6 Bcf/d'
+  },
+  {
+    id:'nfs', name:'North Field South (NFS)',
+    color:'#b07d2a', capacity:3.0, startYear:2028,
+    enabled:true, locked:false, type:'incremental',
+    status:'fid', statusLabel:'FID taken',
+    rampYears:2, plateauYears:7, lifeYears:25,
+    minStart:2027, maxStart:2033,
+    cap:'16 Mtpa LNG · ~3 Bcf/d'
+  },
+  {
+    id:'nfw', name:'North Field West (NFW)',
+    color:'#6b5b95', capacity:4.5, startYear:2031,
+    enabled:true, locked:false, type:'incremental',
+    status:'pre', statusLabel:'Pre-FID / FEED',
+    rampYears:3, plateauYears:6, lifeYears:25,
+    minStart:2029, maxStart:2037,
+    cap:'24 Mtpa LNG · ~4.5 Bcf/d'
+  },
+  {
+    id:'phase4', name:'Additional Phase (2030s)',
+    color:'#c0622f', capacity:3.0, startYear:2035,
+    enabled:false, locked:false, type:'incremental',
+    status:'con', statusLabel:'Concept',
+    rampYears:3, plateauYears:5, lifeYears:20,
+    minStart:2031, maxStart:2042,
+    cap:'Southern ext. / pre-Khuff · ~3 Bcf/d'
+  },
+  {
+    id:'phase5', name:'Ultra-Long Tail (2040s+)',
+    color:'#888', capacity:2.0, startYear:2042,
+    enabled:false, locked:false, type:'incremental',
+    status:'con', statusLabel:'Speculative',
+    rampYears:3, plateauYears:5, lifeYears:20,
+    minStart:2038, maxStart:2052,
+    cap:'Eastern extensions / frontier Khuff'
+  },
+];
+
+let chartInstance = null;
+let currentView = 'rate';
+
+// ═══════════════════════════════════════════════════════
+//  PARAM CONTROL
+// ═══════════════════════════════════════════════════════
+function setParam(key, val, elId, fmt) {
+  P[key] = val;
+  // format with commas if Tcf
+  const display = key==='ogip' ? val.toLocaleString()+' Tcf' : fmt(val);
+  document.getElementById(elId).textContent = display;
+  if(key==='natdecline') document.getElementById('cap-natdecline').textContent = val;
+  render();
+}
+
+// ═══════════════════════════════════════════════════════
+//  PROJECT CARDS
+// ═══════════════════════════════════════════════════════
+function buildProjectGrid() {
+  const grid = document.getElementById('proj-grid');
+  grid.innerHTML = PROJECTS.map(proj => {
+    const sc = {op:'s-op',fid:'s-fid',pre:'s-pre',con:'s-con'}[proj.status];
+    const isLocked = proj.locked;
+    return `
+    <div class="proj-row ${proj.enabled?'':'disabled'} ${isLocked?'locked':''}" id="prow-${proj.id}"
+         style="border-left:3px solid ${proj.color}">
+      <div class="proj-swatch" style="background:${proj.color}"></div>
+      <div class="proj-info">
+        <div class="proj-name" title="${proj.cap}">${proj.name}</div>
+        <div class="proj-cap">${proj.cap}</div>
+      </div>
+      <span class="proj-status ${sc}">${proj.statusLabel}</span>
+      <div class="proj-controls">
+        ${isLocked
+          ? `<div style="font-size:.65rem;color:#888;font-style:italic">always&nbsp;on</div>`
+          : `<div class="proj-toggle-wrap">
+               <input type="checkbox" id="chk-${proj.id}" ${proj.enabled?'checked':''}
+                 onchange="toggleProj('${proj.id}',this.checked)">
+               <label for="chk-${proj.id}">Include</label>
+             </div>`
+        }
+        ${proj.type==='sustain'
+          ? `<div class="proj-start-wrap">
+               <span>Active&nbsp;from</span>
+               <input type="range" min="${proj.minStart}" max="${proj.maxStart}" step="1"
+                 value="${proj.startYear}" id="sl-${proj.id}"
+                 ${(!proj.enabled&&!isLocked)?'disabled':''}
+                 oninput="setProjStart('${proj.id}',+this.value)">
+               <span class="yr" id="yr-${proj.id}">${proj.startYear}</span>
+             </div>`
+          : proj.locked ? ''
+          : `<div class="proj-start-wrap">
+               <span>Start</span>
+               <input type="range" min="${proj.minStart}" max="${proj.maxStart}" step="1"
+                 value="${proj.startYear}" id="sl-${proj.id}"
+                 ${(!proj.enabled&&!isLocked)?'disabled':''}
+                 oninput="setProjStart('${proj.id}',+this.value)">
+               <span class="yr" id="yr-${proj.id}">${proj.startYear}</span>
+             </div>`
+        }
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleProj(id, checked) {
+  const proj = PROJECTS.find(p=>p.id===id);
+  proj.enabled = checked;
+  const row = document.getElementById('prow-'+id);
+  row.classList.toggle('disabled', !checked);
+  const sl = document.getElementById('sl-'+id);
+  if(sl) sl.disabled = !checked;
+  render();
+}
+function setProjStart(id, val) {
+  PROJECTS.find(p=>p.id===id).startYear = val;
+  document.getElementById('yr-'+id).textContent = val;
+  render();
+}
+
+// ═══════════════════════════════════════════════════════
+//  PRODUCTION MODEL
+// ═══════════════════════════════════════════════════════
+
+// Base train rate at year (accounts for natural decline and NFPS sustain)
+function baseRateAtYear(yr, includeNFPS) {
+  const BASE_2025 = 18.5;
+  if(yr <= 2025) return BASE_2025;
+
+  const nfps = PROJECTS.find(p=>p.id==='nfps');
+  const nfpsActive = includeNFPS && nfps.enabled && yr >= nfps.startYear;
+  const sustainEnd = nfps.sustainUntil || 2045;
+
+  if(nfpsActive && yr <= sustainEnd) {
+    // NFPS holds the base flat until sustain capacity is exhausted,
+    // then natural decline resumes from that point
+    return BASE_2025;
+  } else {
+    // Natural decline from 2026 without NFPS (or after NFPS expires)
+    const declineStart = nfpsActive ? sustainEnd : 2026;
+    const declineBase = BASE_2025; // NFPS would have held it here
+    return Math.max(0, declineBase * Math.pow(1 - P.natdecline/100, yr - declineStart));
+  }
+}
+
+// Incremental project rate at year
+function incrRateAtYear(proj, yr) {
+  if(!proj.enabled || proj.type==='base' || proj.type==='sustain') return 0;
+  if(yr < proj.startYear) return 0;
+  const age = yr - proj.startYear;
+  const ramp = proj.rampYears || 2;
+  const plateau = proj.plateauYears || 6;
+  if(age < ramp) return proj.capacity * (age+1)/ramp;
+  if(age < ramp+plateau) return proj.capacity;
+  const decAge = age - ramp - plateau;
+  return Math.max(0, proj.capacity * Math.pow(1 - P.decline/100, decAge));
+}
+
+function buildTimeline(includeNFPS=true) {
+  const urg = P.ogip * P.rf/100;
+  const ABANDON = 1.5;
+  const projYears=[], totalRates=[], baseRates=[], incrRates={};
+  PROJECTS.filter(p=>p.type==='incremental').forEach(p=>{ incrRates[p.id]=[]; });
+
+  let cumGp = 130;
+  for(let yr=2026; yr<=2090; yr++) {
+    const base = baseRateAtYear(yr, includeNFPS);
+    let incr = 0;
+    PROJECTS.filter(p=>p.type==='incremental').forEach(p=>{
+      const r = incrRateAtYear(p, yr);
+      incrRates[p.id].push({x:yr, y:parseFloat(r.toFixed(3))});
+      if(p.enabled) incr += r;
+    });
+    const total = base + incr;
+    const annual = total*365/1000;
+    cumGp = Math.min(cumGp+annual, urg);
+    projYears.push(yr);
+    totalRates.push(parseFloat(total.toFixed(2)));
+    baseRates.push(parseFloat(base.toFixed(2)));
+    if(cumGp >= urg || total < ABANDON) break;
+  }
+  return {projYears, totalRates, baseRates, incrRates, urg};
+}
+
+// ═══════════════════════════════════════════════════════
+//  STAT ROW
+// ═══════════════════════════════════════════════════════
+function setStats(cells) {
+  document.getElementById('stat-row').innerHTML = cells.map(c=>`
+    <div class="stat-cell">
+      <div class="stat-label">${c.label}</div>
+      <div class="stat-val">${c.val}</div>
+      ${c.unit?`<div class="stat-unit">${c.unit}</div>`:''}
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+//  CHART OPTIONS FACTORY
+// ═══════════════════════════════════════════════════════
+function chartOpts({xTitle,yTitle,xMin,xMax,yMin,yMax,xReverse,pct}={}) {
+  return {
+    responsive:true, maintainAspectRatio:false,
+    animation:{duration:250},
+    plugins:{
+      legend:{
+        display:true,
+        position:'top',
+        align:'start',
+        labels:{
+          font:{family:"'Source Sans 3',Arial,sans-serif",size:11},
+          color:'#202122',
+          boxWidth:20,
+          padding:10,
+          filter: item => item.text !== '__hide__'
+        }
+      },
+      tooltip:{
+        backgroundColor:'#fff',
+        borderColor:'#a2a9b1',
+        borderWidth:1,
+        titleColor:'#202122',
+        bodyColor:'#54595d',
+        titleFont:{family:"'Source Sans 3',Arial,sans-serif",size:12,weight:'bold'},
+        bodyFont:{family:"'Source Sans 3',Arial,sans-serif",size:11},
+        callbacks:{
+          label: ctx => {
+            const y = ctx.parsed.y;
+            return ` ${ctx.dataset.label}: ${pct?y.toFixed(1)+'%':y.toLocaleString()}`;
+          }
+        }
+      }
+    },
+    scales:{
+      x:{
+        title:{display:true,text:xTitle,font:{family:"'Source Sans 3',Arial,sans-serif",size:11},color:'#54595d'},
+        min:xMin,max:xMax,reverse:!!xReverse,
+        ticks:{font:{family:"'Source Sans 3',Arial,sans-serif",size:10},color:'#72777d'},
+        grid:{color:'#eaecf0'},
+        border:{color:'#a2a9b1'}
+      },
+      y:{
+        title:{display:true,text:yTitle,font:{family:"'Source Sans 3',Arial,sans-serif",size:11},color:'#54595d'},
+        min:yMin,max:yMax,
+        ticks:{font:{family:"'Source Sans 3',Arial,sans-serif",size:10},color:'#72777d',
+               callback:v=>pct?v+'%':v},
+        grid:{color:'#eaecf0'},
+        border:{color:'#a2a9b1'}
+      }
+    }
+  };
+}
+
+// ═══════════════════════════════════════════════════════
+//  VIEW: RATE
+// ═══════════════════════════════════════════════════════
+function viewRate() {
+  const {projYears,totalRates,baseRates,incrRates,urg} = buildTimeline(true);
+  const showCounterfactual = document.getElementById('chk-nofps').checked;
+  const {totalRates:cfRates} = buildTimeline(false);
+
+  const histPts = Object.entries(HIST).map(([y,r])=>({x:+y,y:r}));
+  const totalPts = projYears.map((y,i)=>({x:y,y:totalRates[i]}));
+  const basePts  = projYears.map((y,i)=>({x:y,y:baseRates[i]}));
+  const cfPts    = projYears.map((y,i)=>({x:y,y:cfRates[Math.min(i,cfRates.length-1)]}));
+
+  const peak = Math.max(...totalRates,18.5);
+  const peakYr = totalRates.indexOf(Math.max(...totalRates));
+  const fieldLife = projYears[projYears.length-1];
+  const newCap = PROJECTS.filter(p=>p.enabled&&p.type==='incremental').reduce((s,p)=>s+p.capacity,0);
+  const nfps = PROJECTS.find(p=>p.id==='nfps');
+
+  setStats([
+    {label:'Peak rate (projected)', val:(peak).toFixed(1), unit:'Bcf/day'},
+    {label:'Base sustain (NFPS)', val:nfps.enabled?'Active ('+nfps.startYear+')':'Disabled', unit:''},
+    {label:'Incremental new capacity', val:'+'+newCap.toFixed(1), unit:'Bcf/day'},
+    {label:'URG (mid-case)', val:Math.round(urg).toLocaleString(), unit:'Tcf'},
+    {label:'Field life (est.)', val:'~'+fieldLife, unit:''},
+  ]);
+
+  const incrDatasets = PROJECTS.filter(p=>p.type==='incremental'&&p.enabled).map(proj=>({
+    label:proj.name+' (+'+proj.capacity+' Bcf/d)',
+    data:incrRates[proj.id].filter(pt=>projYears.includes(pt.x)&&pt.y>0.05),
+    borderColor:proj.color,
+    backgroundColor:'transparent',
+    showLine:true,pointRadius:0,borderWidth:1.5,borderDash:[4,3],
+    order:3
+  }));
+
+  const datasets = [
+    // Moratorium band
+    {label:'__hide__',
+     data:[{x:2005,y:0},{x:2005,y:30},{x:2017,y:30},{x:2017,y:0}],
+     borderColor:'transparent',backgroundColor:'rgba(200,150,0,0.07)',
+     showLine:true,pointRadius:0,fill:true,order:99},
+    // Historical
+    {label:'Historical production (EIA/BP)',
+     data:histPts,borderColor:'#2196a5',backgroundColor:'rgba(33,150,165,0.08)',
+     showLine:true,pointRadius:2.5,borderWidth:2,fill:false,order:1},
+    // Base trains sustain
+    {label:'Base trains (14 trains + Dolphin + GTL, sustained by NFPS)',
+     data:basePts,borderColor:'#2196a5',backgroundColor:'transparent',
+     showLine:true,pointRadius:0,borderWidth:1.5,borderDash:[6,3],order:2},
+    // Counterfactual
+    ...(showCounterfactual ? [{
+      label:'Without NFPS compression (natural decline ~'+P.natdecline+'%/yr)',
+      data:cfPts,borderColor:'#a94442',backgroundColor:'transparent',
+      showLine:true,pointRadius:0,borderWidth:1.5,borderDash:[3,3],order:2
+    }] : []),
+    // Per-project incremental
+    ...incrDatasets,
+    // Total
+    {label:'Total projected rate (all enabled projects)',
+     data:totalPts,borderColor:'#202122',backgroundColor:'transparent',
+     showLine:true,pointRadius:0,borderWidth:2.5,order:0},
+    // Current state
+    {label:'End-2025 (EIA)',
+     data:[{x:2025,y:18.5}],borderColor:'#202122',backgroundColor:'#202122',
+     pointRadius:7,pointStyle:'circle',showLine:false,order:0},
+    // Abandon threshold
+    {label:'Abandonment threshold (~1.5 Bcf/d)',
+     data:[{x:1990,y:1.5},{x:2095,y:1.5}],
+     borderColor:'rgba(169,68,66,0.35)',backgroundColor:'transparent',
+     showLine:true,pointRadius:0,borderWidth:1,borderDash:[6,4],order:4},
+  ];
+
+  return {type:'scatter',data:{datasets},
+    options:chartOpts({xTitle:'Year',yTitle:'Production rate (Bcf/day)',xMin:1990,yMin:0,yMax:Math.ceil(peak/4)*4+6})};
+}
+
+// ═══════════════════════════════════════════════════════
+//  VIEW: CUMULATIVE
+// ═══════════════════════════════════════════════════════
+function viewCumulative() {
+  const urg = P.ogip*P.rf/100;
+  const histPts=[];
+  let hcum=0;
+  Object.entries(HIST).forEach(([y,r])=>{
+    hcum+=r*365/1000; histPts.push({x:+y,y:parseFloat(Math.min(hcum,130).toFixed(1))});
+  });
+
+  const {projYears,totalRates,urg:u} = buildTimeline(true);
+  const {totalRates:cfRates} = buildTimeline(false);
+  const showCF = document.getElementById('chk-nofps').checked;
+
+  let cum=130, cfCum=130;
+  const totalPts=[], cfPts=[];
+  projYears.forEach((yr,i)=>{
+    cum=Math.min(cum+totalRates[i]*365/1000, urg);
+    totalPts.push({x:yr,y:parseFloat(cum.toFixed(1))});
+    if(showCF){
+      cfCum=Math.min(cfCum+(cfRates[i]||0)*365/1000, urg);
+      cfPts.push({x:yr,y:parseFloat(cfCum.toFixed(1))});
+    }
+  });
+
+  const finalGp = totalPts.length?totalPts[totalPts.length-1].y:130;
+  setStats([
+    {label:'Produced to end-2025', val:'~130', unit:'Tcf'},
+    {label:'URG (mid-case)', val:Math.round(urg).toLocaleString(), unit:'Tcf'},
+    {label:'Remaining recoverable', val:Math.round(urg-130).toLocaleString(), unit:'Tcf'},
+    {label:'Final field RF', val:Math.round(finalGp/P.ogip*100), unit:'%'},
+  ]);
+
+  return {type:'scatter',data:{datasets:[
+    {label:'URG ceiling ('+Math.round(urg)+' Tcf)',
+     data:[{x:1990,y:urg},{x:2092,y:urg}],
+     borderColor:'rgba(32,33,34,0.2)',backgroundColor:'transparent',
+     showLine:true,pointRadius:0,borderWidth:1,borderDash:[8,5]},
+    {label:'Historical production (EIA/BP)',
+     data:histPts,borderColor:'#2196a5',backgroundColor:'rgba(33,150,165,0.07)',
+     showLine:true,pointRadius:2.5,borderWidth:2,fill:false},
+    {label:'Total cumulative projection (all enabled projects)',
+     data:totalPts,borderColor:'#202122',backgroundColor:'transparent',
+     showLine:true,pointRadius:0,borderWidth:2.5},
+    ...(showCF?[{label:'Without NFPS (cumulative)',
+     data:cfPts,borderColor:'#a94442',backgroundColor:'transparent',
+     showLine:true,pointRadius:0,borderWidth:1.5,borderDash:[3,3]}]:[]),
+    {label:'Current state (end-2025, ~130 Tcf)',
+     data:[{x:2025,y:130}],borderColor:'#202122',backgroundColor:'#202122',
+     pointRadius:7,pointStyle:'circle',showLine:false},
+  ]},
+  options:chartOpts({xTitle:'Year',yTitle:'Cumulative gas produced (Tcf)',xMin:1990,yMin:0})};
+}
+
+// ═══════════════════════════════════════════════════════
+//  VIEW: RECOVERY FACTOR vs PRESSURE
+// ═══════════════════════════════════════════════════════
+function viewRF() {
+  const pi=5300,zi=1.47,pizi=pi/zi;
+  const mkCurve=(rfMax)=>{
+    const arr=[];
+    for(let p=pi;p>=100;p-=50){
+      const z=Math.max(0.85,1.47-(pi-p)*(1.47-0.85)/pi);
+      const gp_frac=Math.max(0,1-(p/z)/pizi);
+      arr.push({x:p,y:parseFloat((Math.min(gp_frac,rfMax)*100).toFixed(2))});
+    }
+    return arr;
+  };
+  const curP=4050,zCur=1.28;
+  const curRF=(1-(curP/zCur)/pizi)*100;
+  const rf=P.rf/100;
+
+  // Project pressure markers — approx P when each project starts
+  const projMarkers = PROJECTS.filter(p=>p.enabled&&p.type==='incremental').map(proj=>{
+    const yr=proj.startYear;
+    const gpEst=Math.min(130+(yr-2026)*18.5*365/1000, P.ogip*rf);
+    const pz=pizi*(1-gpEst/P.ogip);
+    const pEst=Math.max(200,pz*1.26);
+    const rfEst=Math.min((1-pz/pizi)*100, P.rf);
+    return {label:proj.name,p:pEst,rf:rfEst,color:proj.color};
+  });
+
+  setStats([
+    {label:'RF at end-2025 (~4,050 psia)', val:curRF.toFixed(1), unit:'%'},
+    {label:'Target RF at abandonment', val:P.rf, unit:'%'},
+    {label:'URG (mid-case)', val:Math.round(P.ogip*rf).toLocaleString(), unit:'Tcf'},
+    {label:'Dew point', val:'~4,500', unit:'psia'},
+  ]);
+
+  const markerDs = projMarkers.map(m=>({
+    label:m.label.split(' ').slice(0,3).join(' ')+' start (~'+Math.round(m.p)+' psia)',
+    data:[{x:m.p,y:Math.max(0,m.rf)}],
+    borderColor:m.color,backgroundColor:m.color,
+    pointRadius:7,pointStyle:'triangle',showLine:false
+  }));
+
+  return {type:'scatter',data:{datasets:[
+    {label:'High RF scenario (85%)',data:mkCurve(0.85),borderColor:'#4a7c59',backgroundColor:'transparent',showLine:true,pointRadius:0,borderWidth:1.2,borderDash:[4,4]},
+    {label:'Mid RF scenario ('+P.rf+'%)',data:mkCurve(P.rf/100),borderColor:'#2196a5',backgroundColor:'transparent',showLine:true,pointRadius:0,borderWidth:2.5},
+    {label:'Low RF scenario (70%)',data:mkCurve(0.70),borderColor:'#a94442',backgroundColor:'transparent',showLine:true,pointRadius:0,borderWidth:1.2,borderDash:[4,4]},
+    {label:'Dew point (~4,500 psia)',
+     data:[{x:4500,y:0},{x:4500,y:P.rf+8}],
+     borderColor:'rgba(176,125,42,0.55)',backgroundColor:'transparent',
+     showLine:true,pointRadius:0,borderWidth:1,borderDash:[6,4]},
+    {label:'Current state: ~4,050 psia / '+curRF.toFixed(1)+'% RF',
+     data:[{x:4050,y:Math.max(0,curRF)}],
+     borderColor:'#202122',backgroundColor:'#202122',
+     pointRadius:8,pointStyle:'circle',showLine:false},
+    ...markerDs,
+  ]},
+  options:chartOpts({xTitle:'Average reservoir pressure (psia)',yTitle:'Cumulative recovery factor (%)',
+    xMin:0,xMax:5600,xReverse:true,yMin:0,yMax:P.rf+10,pct:true})};
+}
+
+// ═══════════════════════════════════════════════════════
+//  VIEW: REMAINING RESERVES
+// ═══════════════════════════════════════════════════════
+function viewRemaining() {
+  const urg=P.ogip*P.rf/100;
+  const unrecov=P.ogip*(1-P.rf/100);
+  const proved=215;
+  const contingent=Math.max(0,urg-130-proved);
+
+  const pts_total=[],pts_proved=[],pts_cont=[],pts_unrecov=[];
+  for(let g=0;g<=urg+10;g+=12){
+    const rgip=Math.max(0,P.ogip-g);
+    const pr=Math.max(0,proved-Math.max(0,g-130));
+    const cr=Math.max(0,contingent-Math.max(0,g-130-proved));
+    pts_total.push({x:g,y:parseFloat(rgip.toFixed(1))});
+    pts_proved.push({x:g,y:parseFloat(Math.min(pr,rgip).toFixed(1))});
+    pts_cont.push({x:g,y:parseFloat(Math.min(cr,Math.max(0,rgip-pr)).toFixed(1))});
+    pts_unrecov.push({x:g,y:parseFloat(Math.min(unrecov,rgip).toFixed(1))});
+  }
+
+  const projMkDs = PROJECTS.filter(p=>p.enabled&&p.type==='incremental').map(proj=>{
+    const yr=proj.startYear;
+    const gEst=Math.min(130+(yr-2026)*18.5*365/1000,urg);
+    return {
+      label:proj.name.split(' ').slice(0,3).join(' ')+' (~'+yr+')',
+      data:[{x:gEst,y:0},{x:gEst,y:P.ogip-gEst+30}],
+      borderColor:proj.color+'99',backgroundColor:'transparent',
+      showLine:true,pointRadius:0,borderWidth:1,borderDash:[4,3]
+    };
+  });
+
+  setStats([
+    {label:'RGIP (end-2025)', val:Math.round(P.ogip-130).toLocaleString(), unit:'Tcf'},
+    {label:'Recoverable remaining', val:Math.round(urg-130).toLocaleString(), unit:'Tcf'},
+    {label:'Proved remaining (2P)', val:'~'+proved, unit:'Tcf'},
+    {label:'Contingent resources', val:'~'+Math.round(contingent).toLocaleString(), unit:'Tcf'},
+  ]);
+
+  return {type:'scatter',data:{datasets:[
+    {label:'Total RGIP (all gas in place)',data:pts_total,borderColor:'rgba(32,33,34,0.3)',backgroundColor:'transparent',showLine:true,pointRadius:0,borderWidth:1.5,borderDash:[5,4]},
+    {label:'Proved reserves (2P)',data:pts_proved,borderColor:'#4a7c59',backgroundColor:'rgba(74,124,89,0.12)',showLine:true,pointRadius:0,borderWidth:2,fill:false},
+    {label:'Contingent resources (1C–3C)',data:pts_cont,borderColor:'#b07d2a',backgroundColor:'rgba(176,125,42,0.10)',showLine:true,pointRadius:0,borderWidth:1.5,fill:false},
+    {label:'Unrecoverable fraction',data:pts_unrecov,borderColor:'rgba(169,68,66,0.4)',backgroundColor:'rgba(169,68,66,0.05)',showLine:true,pointRadius:0,borderWidth:1,borderDash:[3,3],fill:false},
+    ...projMkDs,
+    {label:'Current state (Gp ≈ 130 Tcf, end-2025)',
+     data:[{x:130,y:P.ogip-130}],borderColor:'#202122',backgroundColor:'#202122',
+     pointRadius:7,pointStyle:'circle',showLine:false},
+  ]},
+  options:chartOpts({xTitle:'Cumulative gas produced, Gp (Tcf)',yTitle:'Gas volume (Tcf)',xMin:0,xMax:urg,yMin:0})};
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════
+const VIEWS = {rate:viewRate,cumulative:viewCumulative,rf:viewRF,remaining:viewRemaining};
+
+function render() {
+  if(chartInstance){chartInstance.destroy();chartInstance=null;}
+  Chart.defaults.color='#202122';
+  Chart.defaults.font.family="'Source Sans 3', Arial, sans-serif";
+  chartInstance = new Chart(document.getElementById('mainChart').getContext('2d'), VIEWS[currentView]());
+}
+
+function switchView(id, btn) {
+  currentView = id;
+  document.querySelectorAll('.view-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function exportPNG(){
+  if(!chartInstance)return;
+  const a=document.createElement('a');
+  a.href=document.getElementById('mainChart').toDataURL('image/png',1.0);
+  a.download='NF_gas_recovery_'+currentView+'.png';
+  a.click();
+}
+function exportCSV(){
+  if(!chartInstance)return;
+  let csv='Dataset,X,Y\n';
+  chartInstance.data.datasets.forEach(d=>{
+    (d.data||[]).forEach(pt=>{
+      if(typeof pt==='object')csv+=`"${d.label}",${pt.x??''},${pt.y??''}\n`;
+    });
+  });
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='NF_gas_recovery_'+currentView+'.csv';
+  a.click();
+}
+
+// INIT
+buildProjectGrid();
+render();
+</script>
+</body>
+</html>
